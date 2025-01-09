@@ -1,8 +1,52 @@
-import {Link} from 'react-router-dom'
+import { useContext, useState } from 'react'
+import {Link, Navigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import AuthContext from '../context/AuthProvider'
+import axios from 'axios'
 
 const Login = () => {
+
+    const navigate = useNavigate()
+    const {setAuth} = useContext(AuthContext)
+
+    // Paso 1
+    const [form, setForm] = useState({
+        email: "",
+        password: ""
+    })
+    
+    
+    // Paso 2
+
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // Paso 3
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const url = `${import.meta.env.VITE_BACKEND_URL}/login`
+            const respuesta = await axios.post(url,form)
+            
+            localStorage.setItem('token',respuesta.data.token)
+            setAuth(respuesta.data)
+            navigate('/Dashboard')
+            toast.success('Bienvenido')
+
+        } catch (error) {
+            toast.error(error.response.data.msg)
+        }
+      
+    }
+    
     return (
         <>
+            <ToastContainer />
             <div className="w-1/2 h-screen bg-[url('/public/images/doglogin.jpg')] 
             bg-no-repeat bg-cover bg-center sm:block hidden
             ">
@@ -16,19 +60,25 @@ const Login = () => {
                     <small className="text-gray-400 block my-4 text-sm">Welcome back! Please enter your details</small>
 
 
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label className="mb-2 block text-sm font-semibold">Email</label>
-                            <input type="email" placeholder="Enter you email" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-2 text-gray-500" />
+                            <input type="email" placeholder="Enter you email" 
+                            name='email'
+                            value={form.email || ""} onChange={handleChange}
+                            className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-2 text-gray-500" />
                         </div>
 
                         <div className="mb-3">
                             <label className="mb-2 block text-sm font-semibold">Password</label>
-                            <input type="email" placeholder="********************" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-2 text-gray-500" />
+                            <input type="password" placeholder="********************" 
+                            name='password'
+                            value={form.password || ""} onChange={handleChange}
+                            className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-2 text-gray-500" />
                         </div>
 
                         <div className="my-4">
-                            <Link to="/dashboard" className="py-2 w-full block text-center bg-gray-500 text-slate-300 border rounded-xl hover:scale-100 duration-300 hover:bg-gray-900 hover:text-white">Login</Link>
+                            <button className="py-2 w-full block text-center bg-gray-500 text-slate-300 border rounded-xl hover:scale-100 duration-300 hover:bg-gray-900 hover:text-white">Login</button>
                         </div>
 
                     </form>
