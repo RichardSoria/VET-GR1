@@ -1,6 +1,7 @@
 import React from 'react'
 import { CardPerfil } from '../components/Perfil/CardPerfil'
 import FormularioPerfil from '../components/Perfil/FormularioPerfil'
+import Password from "../components/Perfil/Password"
 
 const Perfil = () => {
     return (
@@ -17,6 +18,7 @@ const Perfil = () => {
                 </div>
                 <div className='w-full md:w-1/2'>
                     <CardPerfil/>
+                    <Password/>
                 </div>
             </div>
         </>

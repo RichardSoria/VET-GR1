@@ -15,9 +15,9 @@ export const Confirmar = () => {
         try {
             const url = `http://localhost:3000/api/confirmar/${token}`
             const respuesta = await axios.get(url)
-            setMensaje({respuesta:respuesta.data.msg,tipo:false})
+            setMensaje({respuesta:respuesta.data.msg,tipo:true})
         } catch (error) {
-            setMensaje({respuesta:error.response.data.msg,tipo:true})
+            setMensaje({respuesta:error.response.data.msg,tipo:false})
         }
     }
 
