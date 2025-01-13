@@ -17,34 +17,27 @@ const Password = () => {
         })
     }
 
-    const FormularioPerfil = () => {
-        const {actualizarPassword} = useContext(AuthContext)
     
-    
+
     const handleSubmit = async (e) => {
-            e.preventDefault()
-            if (Object.values(form).includes(""))
-            {
-                setMensaje({ respuesta: "Todos los campos deben ser ingresados", tipo: false })
-                    setTimeout(() => {
-                        setMensaje({})
-                    }, 3000);
-                return
-            }
-    
-                    if (form.passwordnuevo.length < 6) {
-                setMensaje({ respuesta: "El password debe tener mínimo 6 carácteres", tipo: false })
+        e.preventDefault()
+        if (Object.values(form).includes(""))
+        {
+            setMensaje({ respuesta: "Todos los campos deben ser ingresados", tipo: false })
                 setTimeout(() => {
                     setMensaje({})
                 }, 3000);
-                return
-            }
-            
-                    const resultado = await actualizarPassword(form)
-            setMensaje(resultado)
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
+            return
+        }
+
+        if (form.passwordnuevo.length < 6)
+        {
+            setMensaje({ respuesta: "El password debe tener al menos 6 caracteres", tipo: false })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
+            return
+        }
     }
 
     return (
