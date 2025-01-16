@@ -1,15 +1,20 @@
 import { Navigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Mensaje from '../components/Alertas/Mensaje';
 import { useNavigate } from "react-router-dom";
+import ModalTratamiento from '../components/Modals/ModalTratamiento';
+import tratamientosContext from '../context/TrataminetosProvider';
+import TablaTratamientos from '../components/TablaTramientos';
 
 const Visualizar = () => {
+
+    const { modal, handleModal, tratamientos} = useContext(tratamientosContext)
 
     const { id } = useParams()
     const [paciente, setPaciente] = useState({})
     const [mensaje, setMensaje] = useState({})
-    const navigate = useNavigate()
+
 
     const formatearFecha = (fecha) => {
         const nuevaFecha = new Date(fecha)
@@ -87,6 +92,23 @@ const Visualizar = () => {
                             <hr className='my-4' />
                             
                             <p className='mb-8'>Este submódulo te permite visualizar los tratamientos del paciente</p>
+                            
+                            <button 
+                            className="bg-green-700 px-6 text-lg p-2
+                            text-slate-300 rounded-lg 
+                            hover:bg-green-900 cursor-pointer'"
+					        onClick={handleModal}
+                            >Registrar</button>
+                            {
+                                modal && <ModalTratamiento idPaciente={paciente._id}/>
+                            }
+                            {
+                                tratamientos.length == 0 ?
+                                <Mensaje tipo={true}>No hay tratamientos registrados</Mensaje>
+                                :
+                                <TablaTratamientos tratamientos={tratamientos}/>
+
+                            }                         
                             </>
                         )
                         :
@@ -102,4 +124,3 @@ const Visualizar = () => {
 
 export default Visualizar
 
-// <input type="submit" className='bg-gray-800 w-full p-3 m-4 text-slate-300 uppercase font-bold rounded-lg hover:bg-gray-600 cursor-pointer transition-all' value='Volver a la lista' onClick={navigate(`/dashboard/listar/`)}/>

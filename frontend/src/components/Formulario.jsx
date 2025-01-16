@@ -23,29 +23,47 @@ export const Formulario = ({paciente}) => {
         })
     }
 
-    const handleSubmit = async(e) => { 
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        try {
+
+        if (paciente?._id) {
             const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/registro`
-            const options={
+            const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/actualizar/${paciente?._id}`
+            const options = {
                 headers: {
+                    method: 'PUT',
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 }
             }
-            await axios.post(url,form,options)
-						setMensaje({ respuesta:"Paciente registrado con exito y correo enviado", tipo: true })
-            setTimeout(() => {
-                navigate('/dashboard/listar');
-            }, 3000);
-        } catch (error) {
-            setMensaje({ respuesta: error.response.data.msg, tipo: false })
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
+            await axios.put(url, form, options)
+            navigate('/dashboard/listar')
+        }
+        else {
+		        try {
+		            const token = localStorage.getItem('token')
+		            form.id = auth._id
+		            const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/registro`
+		            const options={
+		                headers: {
+		                    'Content-Type': 'application/json',
+		                    Authorization: `Bearer ${token}`
+		                }
+		            }
+		            await axios.post(url,form,options)
+								setMensaje({ respuesta:"paciente registrado con exito y correo enviado", tipo: true })
+		            setTimeout(() => {
+		                navigate('/dashboard/listar');
+		            }, 3000);
+		        } catch (error) {
+								setMensaje({ respuesta: error.response.data.msg, tipo: false })
+		            setTimeout(() => {
+		                setMensaje({})
+		            }, 3000);
+		        }
         }
     }
+
 
     return (
         
@@ -155,7 +173,7 @@ export const Formulario = ({paciente}) => {
                 className='bg-gray-600 w-full p-3 
                     text-slate-300 uppercase font-bold rounded-lg 
                     hover:bg-gray-900 cursor-pointer transition-all'
-                value='Registrar' />
+                value={paciente?._id ? 'Actualizar' : 'Registrar'} />
 
         </form>
     )
