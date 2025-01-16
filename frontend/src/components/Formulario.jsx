@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Mensaje from "./Alertas/Mensaje";
 
-export const Formulario = () => {
+export const Formulario = ({paciente}) => {
 
     const navigate = useNavigate()
     const [mensaje, setMensaje] = useState({})
     const [form, setform] = useState({
-        nombre: "",
-        propietario: "",
-        email: "",
-        celular: "",
-        convencional: "",
-        sintomas: ""
+        nombre: paciente?.nombre ??"",
+        propietario: paciente?.propietario ??"",
+        email: paciente?.email ??"",
+        celular: paciente?.celular ??"",  
+        convencional: paciente?.convencional ??"",
+        sintomas: paciente?.sintomas ??"",
+        salida:  new Date(paciente?.salida).toLocaleDateString('en-CA', {timeZone: 'UTC'}) ?? ""
     })
 
     const handleChange = (e) => {
@@ -60,6 +61,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='nombre de la mascota'
                     name='nombre'
+                    value={form.nombre}
                     onChange={handleChange}
                 />
             </div>
@@ -73,6 +75,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='nombre del propietario'
                     name='propietario'
+                    value={form.propietario}
                     onChange={handleChange}
                 />
             </div>
@@ -86,6 +89,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='email del propietario'
                     name='email'
+                    value={form.email}
                     onChange={handleChange}
                 />
             </div>
@@ -99,6 +103,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='celular del propietario'
                     name='celular'
+                    value={form.celular}
                     onChange={handleChange}
                 />
             </div>
@@ -112,6 +117,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='convencional del propietario'
                     name='convencional'
+                    value={form.convencional}
                     onChange={handleChange}
                 />
             </div>
@@ -125,6 +131,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='salida'
                     name='salida'
+                    value={form.salida}
                     onChange={handleChange}
                 />
             </div>
@@ -138,6 +145,7 @@ export const Formulario = () => {
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
                     placeholder='Ingrese los síntomas de la mascota'
                     name='sintomas'
+                    value={form.sintomas}
                     onChange={handleChange}
                 />
             </div>
