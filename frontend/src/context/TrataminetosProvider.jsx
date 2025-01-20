@@ -6,7 +6,7 @@ const tratamientosContext = createContext()
 // Integrantes (children)
 const TratamientosProvider = ({ children }) => {
 
-    const [ modal, setModal ] = useState(false)
+    const [modal, setModal] = useState(false)
     const [tratamientos, setTratamientos] = useState([])
 
     const handleModal = () => {
@@ -21,15 +21,15 @@ const TratamientosProvider = ({ children }) => {
         const token = localStorage.getItem('token')
         try {
             const url = `${import.meta.env.VITE_BACKEND_URL}/tratamiento/registro`
-            const options={
+            const options = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 }
             }
-            const respuesta= await axios.post(url,data,options)
+            const respuesta = await axios.post(url, data, options)
             console.log(respuesta.data.tratamiento);
-            setTratamientos([respuesta.data.tratamiento,...tratamientos])
+            setTratamientos([respuesta.data.tratamiento, ...tratamientos])
         } catch (error) {
             console.log(error);
         }

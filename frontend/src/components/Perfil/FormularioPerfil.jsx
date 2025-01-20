@@ -2,8 +2,11 @@ import { useContext, useState } from 'react'
 import AuthContext from '../../context/AuthProvider'
 import Mensaje from '../Alertas/Mensaje'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faUserPen, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+
 const FormularioPerfil = () => {
-    const {auth, actualizarPerfil} = useContext(AuthContext)
+    const { auth, actualizarPerfil } = useContext(AuthContext)
     const [form, setForm] = useState({
         id: auth._id,
         nombre: auth.nombre,
@@ -24,16 +27,15 @@ const FormularioPerfil = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (Object.values(form).includes(""))
-        {
+        if (Object.values(form).includes("")) {
             setMensaje({ respuesta: "Todos los campos deben ser ingresados", tipo: false })
-                setTimeout(() => {
-                    setMensaje({})
-                }, 3000);
+            setTimeout(() => {
+                setMensaje({})
+            }, 3000);
             return
         }
-        
-		const resultado = await actualizarPerfil(form)
+
+        const resultado = await actualizarPerfil(form)
         setMensaje(resultado)
         setTimeout(() => {
             setMensaje({})
@@ -41,7 +43,7 @@ const FormularioPerfil = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='shadow-2xl rounded-lg p-10'>
             {Object.keys(mensaje).length > 0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}
             <div>
                 <label
@@ -87,7 +89,7 @@ const FormularioPerfil = () => {
             </div>
 
             <div>
-            <label
+                <label
                     htmlFor='telefono'
                     className='text-gray-700 uppercase font-bold text-sm'>Teléfono: </label>
                 <input
@@ -101,7 +103,7 @@ const FormularioPerfil = () => {
                 />
             </div>
             <div>
-            <label
+                <label
                     htmlFor='email'
                     className='text-gray-700 uppercase font-bold text-sm'>Email: </label>
                 <input
@@ -114,16 +116,31 @@ const FormularioPerfil = () => {
                     onChange={handleChange}
                 />
             </div>
+            <div className='flex justify-between gap-4'>
+            <button className="bg-custom-light-blue w-full p-3 text-white  font-bold rounded-lg 
+                hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2">
+                <FontAwesomeIcon icon={faUserPlus} />
+                Agregar Usuario
+            </button>
 
-            <input
-                type="submit"
-                className='bg-gray-800 w-full p-3 
-        text-slate-300 uppercase font-bold rounded-lg 
-        hover:bg-gray-600 cursor-pointer transition-all'
-                value='Actualizar' />
+            <button className="bg-custom-yellow w-full p-3 text-white  font-bold rounded-lg
+                hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2">
+                <FontAwesomeIcon icon={faUserPen} />
+                Actualizar Usuario
+            </button>
+
+            <button className="bg-custom-blue w-full p-3 text-white  font-bold rounded-lg
+                hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2">
+                <FontAwesomeIcon icon={faUserMinus} />
+                Eliminar Usuario
+            </button>
+
+            </div>
+
 
         </form>
     )
 }
 
 export default FormularioPerfil
+

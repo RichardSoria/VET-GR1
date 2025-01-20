@@ -3,15 +3,15 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors';
 
-// Importar la variable routerVeterinarios
-import routerVeterinarios from './routers/veterinario_routes.js'
+import routerAdmin from './routers/admin_routes.js'
 
-// Importar la variable routerPacientes
-import routerPacientes from './routers/paciente_routes.js'
+import routerRutas from './routers/rutas_routes.js'
+
+import routerCorredores from './routers/corredor_routes.js'
+
+import routerParadas from './routers/parada_routes.js'
 
 
-// Importar la variable routerPacientes
-import routerTratamientos from './routers/tratameinto_routes.js'
 
 
 
@@ -33,9 +33,12 @@ app.use(express.json())
 
 
 // Rutas 
-app.use('/api',routerVeterinarios)
-app.use('/api',routerPacientes)
-app.use('/api',routerTratamientos)
+app.use('/api',routerAdmin)
+app.use('/api',routerRutas)
+app.use('/api',routerCorredores)
+app.use('/api',routerParadas)
+
+
 
 
 

@@ -6,16 +6,16 @@ const AuthContext = createContext()
 const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({})
 
-    const perfil = async(token) => {
+    const perfil = async (token) => {
         try {
             const url = `${import.meta.env.VITE_BACKEND_URL}/perfil`
-            const options={
+            const options = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 }
             }
-            const respuesta= await axios.get(url,options)
+            const respuesta = await axios.get(url, options)
             setAuth(respuesta.data)
         } catch (error) {
             console.log(error);
@@ -23,16 +23,15 @@ const AuthProvider = ({ children }) => {
     }
     useEffect(() => {
         const token = localStorage.getItem('token')
-        if(token)
-        {
+        if (token) {
             perfil(token)
         }
     }, [])
 
-    const actualizarPerfil = async(datos) => {
+    const actualizarPerfil = async (datos) => {
         const token = localStorage.getItem('token')
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/veterinario/${datos.id}`
+            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${datos.id}`
             const options = {
                 headers: {
                     method: 'PUT',
@@ -42,16 +41,16 @@ const AuthProvider = ({ children }) => {
             }
             const respuesta = await axios.put(url, datos, options)
             perfil(token)
-            return {respuesta:respuesta.data.msg,tipo:true}
+            return { respuesta: respuesta.data.msg, tipo: true }
         } catch (error) {
-            return {respuesta:error.response.data.msg,tipo:false}
+            return { respuesta: error.response.data.msg, tipo: false }
         }
     }
 
     const actualizarPassword = async (datos) => {
         const token = localStorage.getItem('token')
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/veterinario/actualizarpassword`
+            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/actualizarpassword`
             const options = {
                 headers: {
                     method: 'PUT',
@@ -65,14 +64,14 @@ const AuthProvider = ({ children }) => {
             return { respuesta: error.response.data.msg, tipo: false }
         }
     }
-    
+
     return (
         <AuthContext.Provider value={
             {
                 auth,
                 setAuth,
                 actualizarPerfil,
-                actualizarPassword         
+                actualizarPassword
             }
         }>
             {children}

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Mensaje from "./Alertas/Mensaje";
 
+
+
 export const Formulario = ({paciente}) => {
 
     const navigate = useNavigate()
@@ -16,7 +18,7 @@ export const Formulario = ({paciente}) => {
         sintomas: paciente?.sintomas ??"",
         salida:  new Date(paciente?.salida).toLocaleDateString('en-CA', {timeZone: 'UTC'}) ?? ""
     })
-
+    
     const handleChange = (e) => {
         setform({...form,
             [e.target.name]:e.target.value
@@ -42,7 +44,6 @@ export const Formulario = ({paciente}) => {
         else {
 		        try {
 		            const token = localStorage.getItem('token')
-		            form.id = auth._id
 		            const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/registro`
 		            const options={
 		                headers: {
@@ -67,7 +68,7 @@ export const Formulario = ({paciente}) => {
 
     return (
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
             {Object.keys(mensaje).length>0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}
             <div>
                 <label

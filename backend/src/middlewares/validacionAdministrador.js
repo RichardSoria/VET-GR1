@@ -1,7 +1,7 @@
 import { check, validationResult } from 'express-validator'
 
-export const validacionVeterinario =[
-    check(["nombre","apellido","direccion","telefono","email","password"])
+export const validacionAdministrador =[
+    check(["nombre","apellido","direccion","telefono","email"])
         .exists()
             .withMessage('Los campos "nombre" "apellido" "dirección" "teléfono" "email" y/o "password" son obligatorios')
         .notEmpty()
@@ -31,14 +31,6 @@ export const validacionVeterinario =[
         .isEmail()
             .withMessage('El campo "email" no es correcto')
         .customSanitizer(value => value?.trim()),
-
-    check("password")
-        .isLength({ min: 5 })
-            .withMessage('El campo "password" debe tener al menos 5 caracteres')
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*).*$/)
-            .withMessage('El campo "password" debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial')
-        .customSanitizer(value => value?.trim()),
-
 
     (req,res,next)=>{
         const errors = validationResult(req);

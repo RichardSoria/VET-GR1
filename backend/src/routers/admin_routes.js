@@ -10,18 +10,19 @@ import {
     perfil,
     registro,
     confirmEmail,
-    listarVeterinarios,
-    detalleVeterinario,
+    listarAdministradores,
+    detalleAdministrador,
     actualizarPerfil,
+    eliminarAdministrador,
     actualizarPassword,
     recuperarPassword,
     comprobarTokenPasword,
     nuevoPassword,
-} from "../controllers/veterinario_controller.js";
+} from "../controllers/admin_controller.js";
 import verificarAutenticacion from '../middlewares/autenticacion.js';
 
 
-import { validacionVeterinario } from '../middlewares/validacionVeterinario.js';
+import { validacionAdministrador } from '../middlewares/validacionAdministrador.js';
 
 
 // Rutas publicas
@@ -29,11 +30,11 @@ router.post("/login", login);
 
 
 
-router.post("/registro", validacionVeterinario , registro);
+router.post("/registro", /*validacionAdministrador,*/ registro);
 
 
 router.get("/confirmar/:token", confirmEmail);
-router.get("/veterinarios", listarVeterinarios);
+router.get("/administradores", listarAdministradores);
 router.post("/recuperar-password", recuperarPassword);
 router.get("/recuperar-password/:token", comprobarTokenPasword);
 router.post("/nuevo-password/:token", nuevoPassword);
@@ -45,18 +46,17 @@ router.get("/perfil",verificarAutenticacion , perfil,);
 
 
 
-
-router.put('/veterinario/actualizarpassword',verificarAutenticacion, actualizarPassword)
-
-
-
-router.get("/veterinario/:id", verificarAutenticacion, detalleVeterinario);
+router.put('/administrador/actualizarpassword',verificarAutenticacion, actualizarPassword)
 
 
 
-router.put("/veterinario/:id", verificarAutenticacion, actualizarPerfil);
+router.get("/administrador/:id", verificarAutenticacion, detalleAdministrador);
 
 
+
+router.put("/administrador/:id", verificarAutenticacion, actualizarPerfil);
+
+router.delete("/administrador/:id", verificarAutenticacion, eliminarAdministrador);
 
 
 

@@ -9,12 +9,12 @@ const Tabla = () => {
 
     const navigate = useNavigate()
 
-    const [pacientes, setPacientes] = useState([])
+    const [administradores, setAdministradores] = useState([])
 
-    const listarPacientes = async () => {
+    const listarAdministradores = async () => {
         try {
             const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/pacientes`
+            const url = `${import.meta.env.VITE_BACKEND_URL}/administradores`
             const options = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,14 +22,15 @@ const Tabla = () => {
                 }
             }
             const respuesta = await axios.get(url, options)
-            setPacientes(respuesta.data, ...pacientes)
+            console.log(respuesta.data);
+            setAdministradores(respuesta.data, ...administradores)
         } catch (error) {
             console.log(error);
         }
     }
 
     useEffect(() => {
-        listarPacientes()
+        listarAdministradores()
     }, [])
 
     const hableDelete = async (id) => {

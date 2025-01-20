@@ -6,8 +6,7 @@ export const CardPerfil = () => {
     const { auth } = useContext(AuthContext)
 
     return (
-        <div className="bg-white border border-slate-200 h-full p-4 
-                        flex flex-col items-center justify-between shadow-xl rounded-lg">
+        <div className="border h-full p-10 flex flex-col justify-between shadow-2xl rounded-lg">
 
             <div>
                 <img src="https://cdn-icons-png.flaticon.com/512/4715/4715329.png" alt="img-client" className="m-auto " width={120} height={120} />

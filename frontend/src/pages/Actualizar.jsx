@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import {Formulario} from '../components/Formulario'
+import { Formulario } from '../components/Formulario'
 import Mensaje from '../components/Alertas/Mensaje'
 
 const Actualizar = () => {
@@ -28,7 +28,7 @@ const Actualizar = () => {
         }
         consultarPaciente()
     }, [])
-    
+
 
     return (
         <div>
@@ -38,14 +38,14 @@ const Actualizar = () => {
             {
                 Object.keys(paciente).length != 0 ?
                     (
-                        <Formulario paciente={paciente}/>
+                        <Formulario paciente={paciente} />
                     )
                     :
                     (
                         Object.keys(mensaje).length > 0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>
                     )
             }
-            
+
         </div>
     )
 }

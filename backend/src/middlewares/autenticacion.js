@@ -1,10 +1,7 @@
 
 // Importar JWT y el Modelo
 import jwt from 'jsonwebtoken'
-import Veterinario from '../models/Veterinario.js'
-import Paciente from '../models/Paciente.js'
-
-
+import Administrador from '../models/Admin.js'
 
 
 // Método para proteger rutas
@@ -21,25 +18,19 @@ if(!req.headers.authorization) return res.status(404).json({msg:"Lo sentimos, de
     // Capturar errores
     try {
 
-        
-
+    
 
         // verificar el token recuperado con el almacenado 
         const {id,rol} = jwt.verify(authorization.split(' ')[1],process.env.JWT_SECRET)
         
         // Verificar el rol
-        if (rol==="veterinario"){
+        if (rol==="administrador"){
             // Obtener el usuario 
-            req.veterinarioBDD = await Veterinario.findById(id).lean().select("-password")
+            req.administradorBDD = await Administrador.findById(id).lean().select("-password")
             // Continue el proceso
             next()
         }
-        else{
-            console.log(id,rol);
-            req.pacienteBDD = await Paciente.findById(id).lean().select("-password")
-            console.log(req.pacienteBDD);
-            next()
-        }
+        
 
 
 
