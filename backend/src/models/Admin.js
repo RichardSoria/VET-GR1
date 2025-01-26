@@ -39,16 +39,7 @@ const administradorSchema = new Schema({
     status:{
         type:Boolean,
         default:true
-    },
-    token:{
-        type:String,
-        default:null
-    },
-    changePassword:{
-        type:Boolean,
-        default:false
     }
-
 },{
     timestamps:true
 })

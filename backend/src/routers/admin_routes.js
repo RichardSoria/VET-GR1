@@ -1,5 +1,5 @@
 // Importar Router de Express
-import {Router} from 'express'
+import { Router } from 'express'
 
 // Crear una instancia de Router() 
 const router = Router()
@@ -9,57 +9,42 @@ import {
     login,
     perfil,
     registro,
-    confirmEmail,
     listarAdministradores,
     detalleAdministrador,
     actualizarPerfil,
-    eliminarAdministrador,
-    actualizarPassword,
-    recuperarPassword,
-    comprobarTokenPasword,
-    nuevoPassword,
+    deshabilitarAdministrador,
+    habilitarAdministrador,
 } from "../controllers/admin_controller.js";
 import verificarAutenticacion from '../middlewares/autenticacion.js';
 
 
 import { validacionAdministrador } from '../middlewares/validacionAdministrador.js';
+import verificarAutenticacionSuperAdministrador from '../middlewares/autenticaion_superAdministrador.js';
 
 
 // Rutas publicas
 router.post("/login", login);
 
 
-
-router.post("/registro", /*validacionAdministrador,*/ registro);
-
-
-router.get("/confirmar/:token", confirmEmail);
-router.get("/administradores", listarAdministradores);
-router.post("/recuperar-password", recuperarPassword);
-router.get("/recuperar-password/:token", comprobarTokenPasword);
-router.post("/nuevo-password/:token", nuevoPassword);
-
-
-
 // Rutas privadas
-router.get("/perfil",verificarAutenticacion , perfil,);
+router.post("/registro", verificarAutenticacionSuperAdministrador, registro);
+
+router.get("/administradores", verificarAutenticacion, listarAdministradores);
 
 
-
-router.put('/administrador/actualizarpassword',verificarAutenticacion, actualizarPassword)
-
+router.get("/perfil", verificarAutenticacion, perfil,);
 
 
 router.get("/administrador/:id", verificarAutenticacion, detalleAdministrador);
 
 
-
-router.put("/administrador/:id", verificarAutenticacion, actualizarPerfil);
-
-router.delete("/administrador/:id", verificarAutenticacion, eliminarAdministrador);
+router.put("/administrador/:id", verificarAutenticacionSuperAdministrador, actualizarPerfil);
 
 
+router.put("/administrador/habilitar/:id", verificarAutenticacionSuperAdministrador, habilitarAdministrador);
 
+
+router.put("/administrador/deshabilitar/:id", verificarAutenticacionSuperAdministrador, deshabilitarAdministrador);
 
 
 // Exportar la variable router

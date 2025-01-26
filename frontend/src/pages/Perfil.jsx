@@ -42,8 +42,7 @@ const Perfil = () => {
                     {/* Pasa listarAdministradores como prop */}
                     <Formulario 
                     administrador={administradorSeleccionado}
-                    listarAdministradores={listarAdministradores}
-                    limpiarSeleccion={() => setAdministradorSeleccionado(null)} />
+                    listarAdministradores={listarAdministradores} />
                 </div>
                 <div className='w-full md:w-1/2'>
                     {/* Pasa la lista actualizada de administradores */}

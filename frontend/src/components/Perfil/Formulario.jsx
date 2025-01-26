@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserPen, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 
 
-export const Formulario = ({ administrador, listarAdministradores, limpiarSeleccion }) => {
+export const Formulario = ({ administrador, listarAdministradores }) => {
     const [mensaje, setMensaje] = useState({});
+
     const [form, setForm] = useState({
         nombre: '',
         apellido: '',
@@ -21,15 +22,19 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
         if (administrador) {
             setForm(administrador);
         } else {
-            setForm({
-                nombre: '',
-                apellido: '',
-                direccion: '',
-                telefono: '',
-                email: '',
-            });
+            resetForm();
         }
     }, [administrador]);
+
+    const resetForm = () => {
+        setForm({
+            nombre: '',
+            apellido: '',
+            direccion: '',
+            telefono: '',
+            email: '',
+        })
+    }
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -46,9 +51,13 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
                     Authorization: `Bearer ${token}`
                 }
             }
-            await axios.post(url, form, options)
+
+            const formCrear = { ...form}
+            delete formCrear._id
+
+            await axios.post(url, formCrear, options)
             listarAdministradores()
-            limpiarSeleccion()
+            resetForm()
             setMensaje({ respuesta: "Usuario administrador registrado con exito y correo enviado.", tipo: true })
             setTimeout(() => {
                 setMensaje({})
@@ -78,7 +87,7 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
             }
             await axios.put(url, form, options)
             listarAdministradores()
-            limpiarSeleccion()
+            resetForm()
             setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
             setTimeout(() => {
                 setMensaje({})
@@ -91,22 +100,49 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
         }
     }
 
-    const handleEliminar = async (e) => {
+    const handleHabilitar = async (e) => {
         e.preventDefault()
         try {
             const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administrador._id}`
+            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administrador._id}`
             const options = {
                 headers: {
-                    method: 'DELETE',
+                    method: 'PUT',
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 }
             }
-            await axios.delete(url, options)
+            await axios.put(url, {},options)
             listarAdministradores()
-            limpiarSeleccion()
-            setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
+            resetForm()
+            setMensaje({ respuesta: "Usuario administrador habilitado con exito.", tipo: true })
+            setTimeout(() => {
+                setMensaje({})
+            }, 3000);
+        } catch (error) {
+            setMensaje({ respuesta: error.response.data.msg, tipo: false })
+            setTimeout(() => {
+                setMensaje({})
+            }, 3000);
+        }
+    }
+
+    const handleDesactivar = async (e) => {
+        e.preventDefault()
+        try {
+            const token = localStorage.getItem('token')
+            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administrador._id}`
+            const options = {
+                headers: {
+                    method: 'PUT',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            await axios.put(url, {}, options)
+            listarAdministradores()
+            resetForm()
+            setMensaje({ respuesta: "Usuario administrador deshabilitado con exito.", tipo: true })
             setTimeout(() => {
                 setMensaje({})
             }, 3000);
@@ -188,7 +224,7 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
                     id='email'
                     type="email"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='Email del propietario'
+                    placeholder='Email del usuario'
                     name='email'
                     value={form.email}
                     onChange={handleChange}
@@ -211,12 +247,20 @@ export const Formulario = ({ administrador, listarAdministradores, limpiarSelecc
                     Actualizar Usuario
                 </button>
 
+                <button className="bg-green-600 w-full p-3 text-white  font-bold rounded-lg
+                    hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
+                    onClick={handleHabilitar}>
+                    <FontAwesomeIcon icon={faUserMinus} />
+                    Activar Usuario
+                </button>
+
                 <button className="bg-custom-blue w-full p-3 text-white  font-bold rounded-lg
                     hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
-                    onClick={handleEliminar}>
+                    onClick={handleDesactivar}>
                     <FontAwesomeIcon icon={faUserMinus} />
-                    Eliminar Usuario
+                    Deshabilitar Usuario
                 </button>
+                
 
             </div>
 

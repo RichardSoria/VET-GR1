@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import AuthContext from '../context/AuthProvider'
-import ImagenFranja from '../../public/images/footer.svg'
 import ImagenLogo from '../../public/images/logo_quito_transporte.png'
 import ImagenFondo from '../../public/images/portada_background_metro.png'
 
@@ -19,7 +18,7 @@ const Dashboard = () => {
     return (
         <div className='md:flex md:min-h-screen'>
 
-            <div className='md:w-1/5 px-5 py-20 border-custom-light-blue border-r-8'
+            <div className='md:w-1/6 px-4 py-20 border-custom-light-blue border-r-8'
                 style={{
                     backgroundImage: `url(${ImagenFondo})`,
                     backgroundSize: 'cover',
@@ -50,7 +49,7 @@ const Dashboard = () => {
             <div className='flex-1 flex flex-col justify-between h-screen'>
                 <div className='bg-custom-red py-2 flex md:justify-end items-center gap-5 justify-center'>
                     <div className='text-md font-semibold text-white'>
-                        Administrador - {auth?.nombre}
+                        Usuario - {auth?.rol}
                     </div>
                     <div>
                         <img src="https://cdn-icons-png.flaticon.com/512/4715/4715329.png" alt="img-client" className="border-2 border-green-600 rounded-full" width={50} height={50} />

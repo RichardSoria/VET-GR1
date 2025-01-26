@@ -37,9 +37,8 @@ const Login = () => {
 
             localStorage.setItem('token', respuesta.data.token)
             setAuth(respuesta.data)
-            navigate('/Dashboard')
+            navigate('/dashboard')
             toast.success('Bienvenido')
-
         } catch (error) {
             toast.error(error.response.data.msg)
         }

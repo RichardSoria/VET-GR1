@@ -5,8 +5,10 @@ import Mensaje from "../Alertas/Mensaje";
 import { useNavigate } from "react-router-dom";
 
 
-const Tabla = ({administradores, seleccionarAdministrador}) => {
-    
+const Tabla = ({ administradores, seleccionarAdministrador }) => {
+
+    const navigate = useNavigate()
+
     return (
         <>
             {
@@ -14,37 +16,38 @@ const Tabla = ({administradores, seleccionarAdministrador}) => {
                     ?
                     <Mensaje tipo={'active'}>{'No existen registros'}</Mensaje>
                     :
-                    <table className='w-full mt-5 table-auto shadow-lg  bg-white'>
-                        <thead className='bg-gray-800 text-slate-400'>
-                            <tr>
-                                <th className='p-2'>N°</th>
-                                <th className='p-2'>Nombre</th>
-                                <th className='p-2'>Propietario</th>
-                                <th className='p-2'>Email</th>
-                                <th className='p-2'>Celular</th>
-                                <th className='p-2'>Estado</th>
-                                <th className='p-2'>Información</th>
+                    <table className='w-full mt-5 table-auto shadow-2xl border-2 border-white'>
+                        <thead className='bg-custom-light-blue text-white '>
+                            <tr className='text-center'>
+                                <th className='p-3'>N°</th>
+                                <th className='p-3'>Nombre</th>
+                                <th className='p-3'>Apellido</th>
+                                <th className='p-3'>Email</th>
+                                <th className='p-3'>Celular</th>
+                                <th className='p-3'>Estado</th>
+                                <th className='p-3'>Información</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 administradores.map((administradores, index) => (
-                                    <tr className="border-b hover:bg-gray-300 text-center" key={administradores._id}
-                                    onClick={() => seleccionarAdministrador(administradores)}>
-                                        <td>{index + 1}</td>
-                                        <td>{administradores.nombre}</td>
-                                        <td>{administradores.apellido}</td>
-                                        <td>{administradores.email}</td>
-                                        <td>{administradores.telefono}</td>
-                                        
-                                        <td>
-                                            <span className="bg-blue-100 text-green-500 text-xs font-bold  p-2 rounded dark:bg-blue-900 dark:text-blue-300">{administradores.status && "Activo"} </span>
-                                        </td>
-                                        <td className='py-2 text-center'>
+                                    <tr className={`text-center border-t-2 border-b-2 font-bold hover:bg-blue-300 hover:text-blue-700 ${administradores.status ? "bg-green-200 text-green-600 " : "bg-red-200 text-red-600"
+                                    }`} key={administradores._id}
+                                        onClick={() => seleccionarAdministrador(administradores)}>
+                                        <td className="p-2 border-2 border-white">{index + 1}</td>
+                                        <td className="p-2 border-2 border-white">{administradores.nombre}</td>
+                                        <td className="p-2 border-2 border-white">{administradores.apellido}</td>
+                                        <td className="p-2 border-2 border-white">{administradores.email}</td>
+                                        <td className="p-2 border-2 border-white">{administradores.telefono}</td>
 
-                                            <MdInfo className="h-7 w-7 text-slate-800 cursor-pointer inline-block mr-2" 
-                                            
-                                            onClick={()=>{navigate(`/dashboard/visualizar/${administradores._id}`)}}/>
+                                        <td className="p-2 border-2 border-white">
+                                            <span>{administradores.status ? "Activo" : "Inactivo"} </span>
+                                        </td>
+                                        <td className="border-2 border-white">
+
+                                            <MdInfo className="h-7 w-7 text-custom-light-blue cursor-pointer inline-block hover:text-black"
+
+                                                onClick={() => { navigate(`/dashboard/visualizar/${administradores._id}`) }} />
 
                                         </td>
                                     </tr>

@@ -4,29 +4,26 @@ import axios from 'axios';
 import Mensaje from '../components/Alertas/Mensaje';
 import { useNavigate } from "react-router-dom";
 import ModalTratamiento from '../components/Modals/ModalTratamiento';
-import tratamientosContext from '../context/TrataminetosProvider';
+import TratamientosContext from '../context/TrataminetosProvider';
+import AuthContext from '../context/AuthProvider';
 import TablaTratamientos from '../components/TablaTramientos';
 
 const Visualizar = () => {
 
-    const { modal, handleModal, tratamientos} = useContext(tratamientosContext)
+    const { auth } = useContext(AuthContext)
 
+    const { modal, handleModal, tratamientos, setTratamientos } = useContext(TratamientosContext)
+    const navigate = useNavigate()
     const { id } = useParams()
-    const [paciente, setPaciente] = useState({})
+    const [administrador, setadministrador] = useState({})
     const [mensaje, setMensaje] = useState({})
 
 
-    const formatearFecha = (fecha) => {
-        const nuevaFecha = new Date(fecha)
-			nuevaFecha.setMinutes(nuevaFecha.getMinutes() + nuevaFecha.getTimezoneOffset())
-        return new Intl.DateTimeFormat('es-EC',{dateStyle:'long'}).format(nuevaFecha)
-    }
-
     useEffect(() => {
-        const consultarPaciente = async () => {
+        const consultaradministrador = async () => {
             try {
                 const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/${id}`
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${id}`
                 const options = {
                     headers: {
                         'Content-Type': 'application/json',
@@ -34,88 +31,67 @@ const Visualizar = () => {
                     }
                 }
                 const respuesta = await axios.get(url, options)
-                setPaciente(respuesta.data.paciente)
+
+                setadministrador(respuesta.data)
+
             } catch (error) {
                 setMensaje({ respuesta: error.response.data.msg, tipo: false })
             }
         }
-        consultarPaciente()
+        consultaradministrador()
     }, [])
 
     return (
         <>
             <div>
-                <h1 className='font-black text-4xl text-gray-500'>Visualizar Paciente</h1>
-                <hr className='my-4' />
-                <p className='mb-8'>Este submódulo te permite visualizar los datos del paciente</p>
+                <h1 className='font-black text-4xl text-custom-light-blue'>Visualizar administrador</h1>
+                <hr className='my-4 border-slate-500 border-t-2' />
+                <p className='mb-8'>Este submódulo te permite visualizar los datos del administrador</p>
+                
             </div>
             <div>
-                {
-                    Object.keys(paciente).length != 0 ?
-                        (
-                            <>
-                            <div className='m-5 flex justify-between'>
-                                <div>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Nombre del paciente: </span>
-                                        {paciente.nombre}
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Nombre del propietario: </span>
-                                        {paciente.propietario}
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Email: </span>
-                                        {paciente.email}
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Fecha de atención: </span>
-                                        {formatearFecha(paciente.ingreso)}
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Fecha de salida: </span>
-                                        {formatearFecha(paciente.salida)}
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Estado: </span>
-                                        <span class="bg-blue-100 text-green-500 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{paciente.estado && "activo"}</span>
-                                    </p>
-                                    <p className="text-md text-gray-00 mt-4">
-                                        <span className="text-gray-600 uppercase font-bold">* Síntomas: </span>
-                                        {paciente.sintomas}
-                                    </p>
-                                </div>
-                                <div>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/2138/2138440.png" alt="dogandcat" className='h-80 w-80' />
-                                </div>
-                            </div>
-                            <hr className='my-4' />
-                            
-                            <p className='mb-8'>Este submódulo te permite visualizar los tratamientos del paciente</p>
-                            
-                            <button 
-                            className="bg-green-700 px-6 text-lg p-2
-                            text-slate-300 rounded-lg 
-                            hover:bg-green-900 cursor-pointer'"
-					        onClick={handleModal}
-                            >Registrar</button>
-                            {
-                                modal && <ModalTratamiento idPaciente={paciente._id}/>
-                            }
-                            {
-                                tratamientos.length == 0 ?
-                                <Mensaje tipo={true}>No hay tratamientos registrados</Mensaje>
-                                :
-                                <TablaTratamientos tratamientos={tratamientos}/>
-
-                            }                         
-                            </>
-                        )
-                        :
-                        (
-                            Object.keys(mensaje).length > 0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>
-                        )
-                }
+                <>
+                
+                    <div className='m-5 flex justify-between'>
+                        <div>
+                            <p className="text-md mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Nombre del Administrador: </span>
+                                {administrador.nombre}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Apellido del Administrador: </span>
+                                {administrador.apellido}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Email del Administrador: </span>
+                                {administrador.email}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Teléfono del Administrador: </span>
+                                {administrador.telefono}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Dirección del Administrador: </span>
+                                {administrador.direccion}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Fecha de creación del Usuario: </span>
+                                {administrador.createdAt}
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Fecha de ultimá actualización del Usuario: </span>
+                                {administrador.updatedAt}
+                            </p>
+                        </div>
+                        <div>
+                            <img src="https://www.quito.gob.ec/wp-content/uploads/2024/01/LOGO_ALCALDIA_QUITO-23.svg"  className='h-80 w-80' />
+                        </div>
+                    </div>
+                    <hr className='my-4 border-slate-500 border-t-2' />
+                    <div className='flex justify-center'>
+                        <button className='text-black font-bold bg-custom-yellow p-3 rounded-md text-center text-xl item hover:bg-custom-red hover:text-white' onClick={() => navigate("/dashboard/")}>Regresar a la Gestión de Administradores</button>
+                    </div>
+                </>
             </div>
         </>
 
@@ -123,4 +99,3 @@ const Visualizar = () => {
 }
 
 export default Visualizar
-
