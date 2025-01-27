@@ -87,14 +87,6 @@ const Login = () => {
 
                     </form>
 
-                    <div className="mt-5 text-xs border-b-2 py-4 border-gray-400">
-                        <Link to="/forgot/id" className="underline text-lg text-custom-light-blue hover:text-custom-red">¿Olvidaste tu contraseña?</Link>
-                    </div>
-
-                    <div className="mt-3 text-base font-semibold flex justify-between items-center">
-                        <p>¿Todavía no tienes una cuenta?</p>
-                        <Link to="/register" className="py-2 px-2 bg-custom-yellow text-lg border rounded-xl hover:scale-105 duration-300 hover:bg-custom-red hover:text-white">Registrarse</Link>
-                    </div>
 
                 </div>
 

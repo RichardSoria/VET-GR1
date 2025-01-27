@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
             
             setAuth(respuesta.data)
             
+            
         } catch (error) {
             console.log(error);
         }

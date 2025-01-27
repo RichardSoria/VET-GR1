@@ -1,31 +1,50 @@
 import { useContext } from "react"
 import AuthContext from "../../context/AuthProvider"
+import AdministradorIcon from "../../assets/PRODUCCION.png"
 
 
 export const CardPerfil = () => {
     const { auth } = useContext(AuthContext)
 
     return (
-        <div className="border h-full p-10 flex flex-col justify-between shadow-2xl rounded-lg">
-
-            <div>
-                <img src="https://cdn-icons-png.flaticon.com/512/4715/4715329.png" alt="img-client" className="m-auto " width={120} height={120} />
-            </div>
-            <div className="self-start">
-                <b>Nombre:</b><p className="inline-block ml-3">{auth.nombre}</p>
-            </div>
-            <div className="self-start">
-                <b>Apellido:</b><p className="inline-block ml-3">{auth.apellido}</p>
-            </div >
-            <div className="self-start">
-                <b>Dirección:</b><p className="inline-block ml-3">{auth.direccion}</p>
-            </div>
-            <div className="self-start">
-                <b>Teléfono:</b><p className="inline-block ml-3">{auth.telefono}</p>
-            </div>
-            <div className="self-start">
-                <b>Email:</b><p className="inline-block ml-3">{auth.email}</p>
-            </div>
-        </div>
+            <>
+                <div className='p-2 flex  justify-between'>
+                    <div>
+                        <p className="text-md mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Nombre del Usuario: </span>
+                            {auth.nombre}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Apellido del Usuario: </span>
+                            {auth.apellido}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Email del Usuario: </span>
+                            {auth.email}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Teléfono del Usuario: </span>
+                            {auth.telefono}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Dirección del Usuario: </span>
+                            {auth.direccion}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Rol del usuario: </span>
+                            {auth.rol}
+                        </p>
+                        <p className="text-md text-gray-00 mt-4">
+                            <span className="text-gray-600 uppercase font-bold">* Estado del Usuario: </span>
+                            {auth.status ? "Inactivo" : "Activo"}
+                        </p>
+                    </div>
+                    <div className="flex items-center justify-center">
+                        <img src={AdministradorIcon} width={300}/>
+                    </div>
+                    
+                </div>
+                <hr className='border-slate-500 border-t-2' />
+            </>
     )
 }

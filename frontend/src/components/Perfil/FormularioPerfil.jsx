@@ -3,7 +3,7 @@ import AuthContext from '../../context/AuthProvider'
 import Mensaje from '../Alertas/Mensaje'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUserPen, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 
 const FormularioPerfil = () => {
     const { auth, actualizarPerfil } = useContext(AuthContext)

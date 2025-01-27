@@ -3,7 +3,7 @@ import axios from 'axios';
 import Mensaje from "../Alertas/Mensaje";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUserPen, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 
 
 export const Formulario = ({ administrador, listarAdministradores }) => {
@@ -250,7 +250,7 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
                 <button className="bg-green-600 w-full p-3 text-white  font-bold rounded-lg
                     hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
                     onClick={handleHabilitar}>
-                    <FontAwesomeIcon icon={faUserMinus} />
+                    <FontAwesomeIcon icon={faUserCheck} />
                     Activar Usuario
                 </button>
 

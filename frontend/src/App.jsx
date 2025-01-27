@@ -27,9 +27,7 @@ function App() {
       <AuthProvider>
       <TratamientosProvider>
       <Routes>
-        
         <Route index element={<LandinPage/>}/>
-
         <Route path='/' element={<Auth/>}>
           <Route path='login' element={<Login/>}/>
           <Route path='register' element={<Register/>}/>
@@ -38,11 +36,8 @@ function App() {
           <Route path='recuperar-password/:token' element={<Restablecer/>}/>
           <Route path='*' element={<NotFound />} />
         </Route>
-
         <Route path='dashboard/*' element={
-          
           <PrivateRoute>
-
             <Routes>
               <Route element={<Dashboard/>}>
                 <Route index element={<Perfil/>}/>
@@ -52,13 +47,8 @@ function App() {
                 <Route path='actualizar/:id' element={<Actualizar/>}/>
               </Route>
             </Routes>
-
-          </PrivateRoute>
-        
+          </PrivateRoute> 
         }/>
-
-        
-
       </Routes>
       </TratamientosProvider>
       </AuthProvider>

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ModalTratamiento from '../components/Modals/ModalTratamiento';
 import TratamientosContext from '../context/TrataminetosProvider';
 import AuthContext from '../context/AuthProvider';
-import TablaTratamientos from '../components/TablaTramientos';
+import AdministradorIcon from "../assets/PRODUCCION.png"
 
 const Visualizar = () => {
 
@@ -44,9 +44,9 @@ const Visualizar = () => {
     return (
         <>
             <div>
-                <h1 className='font-black text-4xl text-custom-light-blue'>Visualizar administrador</h1>
+                <h1 className='font-black text-4xl text-custom-light-blue'>Visualizar Administrador</h1>
                 <hr className='my-4 border-slate-500 border-t-2' />
-                <p className='mb-8'>Este submódulo te permite visualizar los datos del administrador</p>
+                <p >Este submódulo te permite visualizar los datos del administrador</p>
                 
             </div>
             <div>
@@ -55,23 +55,23 @@ const Visualizar = () => {
                     <div className='m-5 flex justify-between'>
                         <div>
                             <p className="text-md mt-4">
-                                <span className="text-gray-600 uppercase font-bold">* Nombre del Administrador: </span>
+                                <span className="text-gray-600 uppercase font-bold">* Nombre del Usuario: </span>
                                 {administrador.nombre}
                             </p>
                             <p className="text-md text-gray-00 mt-4">
-                                <span className="text-gray-600 uppercase font-bold">* Apellido del Administrador: </span>
+                                <span className="text-gray-600 uppercase font-bold">* Apellido del Usuario: </span>
                                 {administrador.apellido}
                             </p>
                             <p className="text-md text-gray-00 mt-4">
-                                <span className="text-gray-600 uppercase font-bold">* Email del Administrador: </span>
+                                <span className="text-gray-600 uppercase font-bold">* Email del Usuario: </span>
                                 {administrador.email}
                             </p>
                             <p className="text-md text-gray-00 mt-4">
-                                <span className="text-gray-600 uppercase font-bold">* Teléfono del Administrador: </span>
+                                <span className="text-gray-600 uppercase font-bold">* Teléfono del Usuario: </span>
                                 {administrador.telefono}
                             </p>
                             <p className="text-md text-gray-00 mt-4">
-                                <span className="text-gray-600 uppercase font-bold">* Dirección del Administrador: </span>
+                                <span className="text-gray-600 uppercase font-bold">* Dirección del Usuario: </span>
                                 {administrador.direccion}
                             </p>
                             <p className="text-md text-gray-00 mt-4">
@@ -82,9 +82,17 @@ const Visualizar = () => {
                                 <span className="text-gray-600 uppercase font-bold">* Fecha de ultimá actualización del Usuario: </span>
                                 {administrador.updatedAt}
                             </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Rol del usuario: </span>
+                                Administrador
+                            </p>
+                            <p className="text-md text-gray-00 mt-4">
+                                <span className="text-gray-600 uppercase font-bold">* Estado del Usuario: </span>
+                                {administrador.status ? "Activo" : "Inactivo"}
+                            </p>
                         </div>
-                        <div>
-                            <img src="https://www.quito.gob.ec/wp-content/uploads/2024/01/LOGO_ALCALDIA_QUITO-23.svg"  className='h-80 w-80' />
+                        <div class="flex items-center justify-center">
+                            <img src={AdministradorIcon} width={350}/>
                         </div>
                     </div>
                     <hr className='my-4 border-slate-500 border-t-2' />

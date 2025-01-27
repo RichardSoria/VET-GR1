@@ -33,7 +33,10 @@ const Dashboard = () => {
                 <ul className="mt-5">
 
                     <li className="text-center">
-                        <Link to='/dashboard' className={`${urlActual === '/dashboard' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2  hover:bg-custom-red hover:text-white rounded-md p-2`}>Gestionar Administradores</Link>
+                        {auth.rol === 'Super Administrador'
+                        ? <Link to='/dashboard' className={`${urlActual === '/dashboard' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2  hover:bg-custom-red hover:text-white rounded-md p-2`}>Gestionar Administradores</Link>
+                        : <Link to='/dashboard' className={`${urlActual === '/dashboard' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2  hover:bg-custom-red hover:text-white rounded-md p-2`}> Datos del Usuario</Link>}
+                        
                     </li>
 
                     <li className="text-center">
