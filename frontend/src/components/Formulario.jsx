@@ -5,18 +5,30 @@ import Mensaje from "./Alertas/Mensaje";
 
 
 
-export const Formulario = ({paciente}) => {
+export const Formulario = ({corredor}) => {
 
     const navigate = useNavigate()
     const [mensaje, setMensaje] = useState({})
     const [form, setform] = useState({
-        nombre: paciente?.nombre ??"",
-        propietario: paciente?.propietario ??"",
-        email: paciente?.email ??"",
-        celular: paciente?.celular ??"",  
-        convencional: paciente?.convencional ??"",
-        sintomas: paciente?.sintomas ??"",
-        salida:  new Date(paciente?.salida).toLocaleDateString('en-CA', {timeZone: 'UTC'}) ?? ""
+        nombre_corredor: corredor?.nombre_corredor ??"",
+        inaguracion_corredor: corredor?.inaguracion_corredor ??"",
+        integracion_alimentador: corredor?.integracion_alimentador ??"",
+        integracion_corredor: corredor?.integracion_corredor ??"",  
+        longitud_corredor: corredor?.longitud_corredor ??"",
+        tipo_servicio: corredor?.tipo_servicio ??"",
+        vehiculos: {
+            trolebus: corredor?.trolebus ??"",
+            biarticulados: corredor?.biarticulados ??"",
+            mb0500: corredor?.mb0500 ??"",
+        },
+        demanda_diaria: corredor?.demanda_diaria ??"",
+        tarifa: {
+            normal: corredor?.normal ??"",
+            reducida: corredor?.reducida ??"",
+            preferencial: corredor?.preferencial ??"",
+        },
+        historia: corredor?.historia ??""
+        
     })
     
     const handleChange = (e) => {
@@ -72,13 +84,13 @@ export const Formulario = ({paciente}) => {
             {Object.keys(mensaje).length>0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}
             <div>
                 <label
-                    htmlFor='nombre:'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre de la mascota: </label>
+                    htmlFor='nombre_corredor:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Nombre del corredor: </label>
                 <input
-                    id='nombre'
+                    id='nombre_corredor'
                     type="text"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre de la mascota'
+                    placeholder='Nombre del corredor'
                     name='nombre'
                     value={form.nombre}
                     onChange={handleChange}

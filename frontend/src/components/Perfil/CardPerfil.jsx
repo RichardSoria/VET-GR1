@@ -36,7 +36,7 @@ export const CardPerfil = () => {
                         </p>
                         <p className="text-md text-gray-00 mt-4">
                             <span className="text-gray-600 uppercase font-bold">* Estado del Usuario: </span>
-                            {auth.status ? "Inactivo" : "Activo"}
+                            {auth.status ? "Activo" : "nactivo"}
                         </p>
                     </div>
                     <div className="flex items-center justify-center">

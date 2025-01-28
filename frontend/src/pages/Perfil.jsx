@@ -44,7 +44,7 @@ const Perfil = () => {
                 <hr className='my-4 border-gray-400 border-t-2' />
                 {
                     auth.rol === 'Administrador'
-                        ? <p>Este módulo te permite visualizar los datos de tu usuario</p>
+                        ? <p>Este módulo te permite visualizar los datos de tu usuario...</p>
                         : <p>Este módulo permite la gestión de los usuarios Administradores...</p>
                 }
             </div>

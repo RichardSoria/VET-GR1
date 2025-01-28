@@ -36,7 +36,7 @@ const corredorSchema = new Schema(
         type: Number,
         required: true,
       },
-      MB0500: {
+      mb0500: {
         type: Number,
         required: true,
       },
