@@ -2,28 +2,28 @@ import mongoose, { Schema, model } from 'mongoose';
 
 const corredorSchema = new Schema(
   {
-    nombre: {
+    nombre_corredor: {
       type: String,
       required: true,
       trim: true,
     },
-    inauguracion: {
+    inaguracion_corredor: {
       type: Date,
       required: true,
     },
-    "integracion alimentador": {
+    integracion_alimentador: {
       type: String,
       required: true,
     },
-    "integracion corredores": {
+    integracion_corredor: {
       type: String,
       required: true,
     },
-    longitud: {
+    longitud_corredor: {
       type: String,
       required: true,
     },
-    "tipo de servicio": {
+    tipo_servicio: {
       type: String,
       required: true,
     },
@@ -41,7 +41,7 @@ const corredorSchema = new Schema(
         required: true,
       },
     },
-    "demanda diaria": {
+    demanda_diaria: {
       type: String,
       required: true,
     },

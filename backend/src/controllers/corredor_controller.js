@@ -56,19 +56,18 @@ const listarParadasDeCorredor = async (req, res) => {
 
 // Crear un nuevo corredor
 const crearCorredor = async (req, res) => {
-  const { nombre, paradas } = req.body;
+  const { nombre_corredor } = req.body;
 
   
-  if (!nombre || !paradas) {
-    return res.status(400).json({ msg: "Todos los campos son obligatorios." });
-  }
+  if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    
 
   try {
     
-    const corredorExistente = await Corredor.findOne({ nombre: nombre.trim() });
+    const corredorExistente = await Corredor.findOne({ nombre_corredor: nombre_corredor.trim() });
 
     if (corredorExistente) {
-      return res.status(400).json({ msg: `El corredor con el nombre "${nombre}" ya existe.` });
+      return res.status(400).json({ msg: `El corredor con el nombre "${nombre_corredor}" ya existe.` });
     }
 
     

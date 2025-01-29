@@ -67,7 +67,10 @@ const Dashboard = () => {
                 <div className='overflow-y-scroll p-8'>
                     {autenticado ? <Outlet /> : <Navigate to='/login' />}
                 </div>
-                <div className='h-16 bg-custom-blue' />
+                <div className='bg-custom-blue py-2 text-center text-white'>
+                    <p>@ Empresa Pública de Transporte de Pasajeros Quito</p>
+                    <p>Quito - Ecuador</p>
+                </div>
             </div>
         </div>
     )
