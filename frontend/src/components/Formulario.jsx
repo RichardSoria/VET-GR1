@@ -90,14 +90,14 @@ export const Formulario = ({ corredor }) => {
         try {
             const token = localStorage.getItem('token');
             const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/registro`;
-    
+
             const options = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 }
             };
-    
+
             // Asegurar valores válidos antes de enviar
             const formCrear = {
                 ...form,
@@ -114,12 +114,12 @@ export const Formulario = ({ corredor }) => {
             };
 
             delete formCrear._id;  // Eliminar _id si existe (actualización)
-        
+
             await axios.post(url, formCrear, options);
             resetForm();
             setMensaje({ respuesta: "Usuario administrador registrado con éxito.", tipo: true });
             setTimeout(() => setMensaje({}), 3000);
-            
+
         } catch (error) {
             console.error(error);
             setMensaje({ respuesta: error.response?.data?.msg || "Error en el registro.", tipo: false });

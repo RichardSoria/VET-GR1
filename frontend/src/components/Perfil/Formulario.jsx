@@ -84,7 +84,7 @@ export const Formulario = () => {
             const confirmacion = window.confirm('¿Estas seguro de actualizar este usuario?')
             if (confirmacion) {
                 const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administrador._id}`
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administradorSeleccionado._id}`
                 const options = {
                     headers: {
                         method: 'PUT',
@@ -114,7 +114,7 @@ export const Formulario = () => {
             const confirmacion = window.confirm('¿Estas seguro de habilitar este usuario?')
             if (confirmacion) {
                 const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administrador._id}`
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administradorSeleccionado._id}`
                 const options = {
                     headers: {
                         method: 'PUT',
@@ -144,7 +144,7 @@ export const Formulario = () => {
             const confirmacion = window.confirm('¿Estas seguro de deshabilitar este usuario?')
             if (confirmacion) {
                 const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administrador._id}`
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administradorSeleccionado._id}`
                 const options = {
                     headers: {
                         method: 'PUT',
