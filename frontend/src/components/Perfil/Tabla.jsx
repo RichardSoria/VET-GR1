@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdDeleteForever, MdNoteAdd, MdInfo } from "react-icons/md";
-import axios from 'axios';
+
 import Mensaje from "../Alertas/Mensaje";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
 
 
-const Tabla = ({ administradores, seleccionarAdministrador }) => {
+const Tabla = () => {
 
+    const { administradores, setAdministradorSeleccionado } = useContext(AuthContext)
     const navigate = useNavigate()
 
     return (
@@ -30,24 +32,24 @@ const Tabla = ({ administradores, seleccionarAdministrador }) => {
                         </thead>
                         <tbody>
                             {
-                                administradores.map((administradores, index) => (
-                                    <tr className={`text-center border-t-2 border-b-2 font-bold hover:bg-blue-300 hover:text-blue-700 ${administradores.status ? "bg-green-200 text-green-600 " : "bg-red-200 text-red-600"
-                                    }`} key={administradores._id}
-                                        onClick={() => seleccionarAdministrador(administradores)}>
+                                administradores.map((administrador, index) => (
+                                    <tr className={`text-center border-t-2 border-b-2 font-bold hover:bg-blue-300 hover:text-blue-700 ${administrador.status ? "bg-green-200 text-green-600 " : "bg-red-200 text-red-600"
+                                        }`} key={administrador._id}
+                                        onClick={() => setAdministradorSeleccionado(administrador)}>
                                         <td className="p-2 border-2 border-white">{index + 1}</td>
-                                        <td className="p-2 border-2 border-white">{administradores.nombre}</td>
-                                        <td className="p-2 border-2 border-white">{administradores.apellido}</td>
-                                        <td className="p-2 border-2 border-white">{administradores.email}</td>
-                                        <td className="p-2 border-2 border-white">{administradores.telefono}</td>
+                                        <td className="p-2 border-2 border-white">{administrador.nombre}</td>
+                                        <td className="p-2 border-2 border-white">{administrador.apellido}</td>
+                                        <td className="p-2 border-2 border-white">{administrador.email}</td>
+                                        <td className="p-2 border-2 border-white">{administrador.telefono}</td>
 
                                         <td className="p-2 border-2 border-white">
-                                            <span>{administradores.status ? "Activo" : "Inactivo"} </span>
+                                            <span>{administrador.status ? "Activo" : "Inactivo"} </span>
                                         </td>
                                         <td className="border-2 border-white">
 
                                             <MdInfo className="h-7 w-7 text-custom-light-blue cursor-pointer inline-block hover:text-black"
 
-                                                onClick={() => { navigate(`/dashboard/visualizar/${administradores._id}`) }} />
+                                                onClick={() => { navigate(`/dashboard/visualizar/${administrador._id}`) }} />
 
                                         </td>
                                     </tr>

@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import axios from 'axios';
 import Mensaje from "../Alertas/Mensaje";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import AuthContext from "../../context/AuthProvider";
 
 
-export const Formulario = ({ administrador, listarAdministradores }) => {
+export const Formulario = () => {
+
+    const { administradorSeleccionado, listarAdministradores } = useContext(AuthContext)
+
     const [mensaje, setMensaje] = useState({});
 
     const [form, setForm] = useState({
@@ -19,12 +23,12 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
 
     // Llenar el formulario automáticamente cuando cambie el administrador seleccionado
     useEffect(() => {
-        if (administrador) {
-            setForm(administrador);
+        if (administradorSeleccionado) {
+            setForm(administradorSeleccionado);
         } else {
             resetForm();
         }
-    }, [administrador]);
+    }, [administradorSeleccionado]);
 
     const resetForm = () => {
         setForm({
@@ -43,26 +47,28 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
     const handleAgregar = async (e) => {
         e.preventDefault()
         try {
-            const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/registro`
-            const options = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+            const confirmacion = window.confirm('¿Estas seguro de agregar este usuario?')
+            if (confirmacion) {
+                const token = localStorage.getItem('token')
+                const url = `${import.meta.env.VITE_BACKEND_URL}/registro`
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
+
+                const formCrear = { ...form }
+                delete formCrear._id
+
+                await axios.post(url, formCrear, options)
+                listarAdministradores()
+                resetForm()
+                setMensaje({ respuesta: "Usuario administrador registrado con exito y correo enviado.", tipo: true })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
             }
-
-            const formCrear = { ...form}
-            delete formCrear._id
-
-            await axios.post(url, formCrear, options)
-            listarAdministradores()
-            resetForm()
-            setMensaje({ respuesta: "Usuario administrador registrado con exito y correo enviado.", tipo: true })
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
-
         } catch (error) {
             console.log(error)
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
@@ -75,23 +81,25 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
     const handleActualizar = async (e) => {
         e.preventDefault()
         try {
-
-            const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administrador._id}`
-            const options = {
-                headers: {
-                    method: 'PUT',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+            const confirmacion = window.confirm('¿Estas seguro de actualizar este usuario?')
+            if (confirmacion) {
+                const token = localStorage.getItem('token')
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administrador._id}`
+                const options = {
+                    headers: {
+                        method: 'PUT',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
+                await axios.put(url, form, options)
+                listarAdministradores()
+                resetForm()
+                setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
             }
-            await axios.put(url, form, options)
-            listarAdministradores()
-            resetForm()
-            setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
             setTimeout(() => {
@@ -103,22 +111,25 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
     const handleHabilitar = async (e) => {
         e.preventDefault()
         try {
-            const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administrador._id}`
-            const options = {
-                headers: {
-                    method: 'PUT',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+            const confirmacion = window.confirm('¿Estas seguro de habilitar este usuario?')
+            if (confirmacion) {
+                const token = localStorage.getItem('token')
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administrador._id}`
+                const options = {
+                    headers: {
+                        method: 'PUT',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
+                await axios.put(url, {}, options)
+                listarAdministradores()
+                resetForm()
+                setMensaje({ respuesta: "Usuario administrador habilitado con exito.", tipo: true })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
             }
-            await axios.put(url, {},options)
-            listarAdministradores()
-            resetForm()
-            setMensaje({ respuesta: "Usuario administrador habilitado con exito.", tipo: true })
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
             setTimeout(() => {
@@ -130,22 +141,25 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
     const handleDesactivar = async (e) => {
         e.preventDefault()
         try {
-            const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administrador._id}`
-            const options = {
-                headers: {
-                    method: 'PUT',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+            const confirmacion = window.confirm('¿Estas seguro de deshabilitar este usuario?')
+            if (confirmacion) {
+                const token = localStorage.getItem('token')
+                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administrador._id}`
+                const options = {
+                    headers: {
+                        method: 'PUT',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
+                await axios.put(url, {}, options)
+                listarAdministradores()
+                resetForm()
+                setMensaje({ respuesta: "Usuario administrador deshabilitado con exito.", tipo: true })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
             }
-            await axios.put(url, {}, options)
-            listarAdministradores()
-            resetForm()
-            setMensaje({ respuesta: "Usuario administrador deshabilitado con exito.", tipo: true })
-            setTimeout(() => {
-                setMensaje({})
-            }, 3000);
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
             setTimeout(() => {
@@ -153,7 +167,7 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
             }, 3000);
         }
     }
-    
+
 
 
     return (
@@ -260,7 +274,7 @@ export const Formulario = ({ administrador, listarAdministradores }) => {
                     <FontAwesomeIcon icon={faUserMinus} />
                     Deshabilitar Usuario
                 </button>
-                
+
 
             </div>
 

@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdDeleteForever, MdNoteAdd, MdInfo } from "react-icons/md";
 import axios from 'axios';
 import Mensaje from "./Alertas/Mensaje";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthProvider";
+
 
 
 const Tabla = () => {
 
+    const { administradores, setAdministradorSeleccionado } = useContext(AuthContext)
+
     const navigate = useNavigate()
 
-    const [administradores, setAdministradores] = useState([])
+    
 
     const listarAdministradores = async () => {
         try {
