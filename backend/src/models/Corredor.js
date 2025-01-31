@@ -68,7 +68,11 @@ const corredorSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Parada',  
       }
-    ]
+    ],
+    status: {
+      type: Boolean,
+      default: true,
+    }
   },
   {
     timestamps: true,

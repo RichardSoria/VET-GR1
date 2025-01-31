@@ -9,12 +9,6 @@ const Dashboard = () => {
     const { auth } = useContext(AuthContext);
     const autenticado = localStorage.getItem('token');
 
-    // 🔄 Dispara un evento global al cambiar de ruta
-    useEffect(() => {
-        const event = new Event('resetForm');
-        window.dispatchEvent(event);
-    }, [location.pathname]); // Se ejecuta cada vez que cambia la ruta
-
     return (
         <div className='md:flex md:min-h-screen'>
             <div className='md:w-1/6 px-4 py-20 border-custom-light-blue border-r-8'

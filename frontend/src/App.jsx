@@ -17,6 +17,7 @@ import Restablecer from './pages/Restablecer'
 import { AdministradorProvider } from './context/AdministradorProvider'
 import { PrivateRoute } from './routes/PrivateRoute'
 import { TratamientosProvider } from './context/TrataminetosProvider'
+import { CorredorProvider } from './context/CorredorProvider'
 
 
 
@@ -25,6 +26,7 @@ function App() {
     <>
     <BrowserRouter>
       <AdministradorProvider>
+        <CorredorProvider>
       <TratamientosProvider>
       <Routes>
         <Route index element={<LandinPage/>}/>
@@ -51,6 +53,7 @@ function App() {
         }/>
       </Routes>
       </TratamientosProvider>
+      </CorredorProvider>
       </AdministradorProvider>
     </BrowserRouter>
     </>

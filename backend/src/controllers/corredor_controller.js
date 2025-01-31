@@ -74,7 +74,7 @@ const crearCorredor = async (req, res) => {
     const nuevoCorredor = new Corredor(req.body);
     await nuevoCorredor.save();
 
-    res.status(201).json({ msg: "Corredor creado exitosamente.", nuevoCorredor });
+    res.status(201).json({ msg: `El corredor ${nombre_corredor} ha sido creado con exito.`, nuevoCorredor });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error al crear el corredor", error: error.message });
@@ -106,8 +106,7 @@ const actualizarCorredor = async (req, res) => {
   }
 };
 
-// Eliminar un corredor 
-const eliminarCorredor = async (req, res) => {
+const habilitarCorredor = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -115,16 +114,40 @@ const eliminarCorredor = async (req, res) => {
   }
 
   try {
-    const corredorEliminado = await Corredor.findByIdAndDelete(id);
-    if (!corredorEliminado) {
+    const corredor = await Corredor.findById(id);
+    if (!corredor) {
       return res.status(404).json({ msg: `El corredor con ID ${id} no fue encontrado.` });
     }
-    res.status(200).json({ msg: "Corredor eliminado exitosamente.", corredorEliminado });
+
+    const corredorHabilitado = await Corredor.findByIdAndUpdate(id, { status: true }, { new: true });
+    res.status(200).json({ msg: "Corredor habilitado exitosamente.", corredorHabilitado });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Error al eliminar el corredor", error: error.message });
+    res.status(500).json({ msg: "Error al habilitar el corredor", error: error.message });
   }
-};
+}
+
+const deshabilitarCorredor = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: `El corredor con ID ${id} no existe.` });
+  }
+
+  try {
+    const corredor = await Corredor.findById(id);
+    if (!corredor) {
+      return res.status(404).json({ msg: `El corredor con ID ${id} no fue encontrado.` });
+    }
+
+    const corredorDeshabilitado = await Corredor.findByIdAndUpdate(id, { status: false }, { new: true });
+    res.status(200).json({ msg: "Corredor deshabilitado exitosamente.", corredorDeshabilitado });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al deshabilitar el corredor", error: error.message });
+  }
+}
+
 
 export {
   listarCorredores,
@@ -132,5 +155,6 @@ export {
   listarParadasDeCorredor,
   crearCorredor,
   actualizarCorredor,
-  eliminarCorredor,
+  habilitarCorredor,
+  deshabilitarCorredor
 };

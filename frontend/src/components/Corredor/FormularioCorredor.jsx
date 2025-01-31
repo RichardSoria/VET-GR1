@@ -1,69 +1,72 @@
-import { useContext, useState } from "react"
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import { useContext, useState, useEffect } from "react";
+import CorredorContext from "../../context/CorredorProvider";
 import Mensaje from "../Alertas/Mensaje";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
-
-export const FormularioCorredor = ({ corredor }) => {
-
-    const navigate = useNavigate()
-
-    const [mensaje, setMensaje] = useState({})
-    const [form, setform] = useState({
-        nombre_corredor: corredor?.nombre_corredor ?? "",
-        inaguracion_corredor: corredor?.inaguracion_corredor
-            ? new Date(corredor.inaguracion_corredor).toLocaleDateString('en-CA', { timeZone: 'UTC' })
-            : "",
-        integracion_alimentador: corredor?.integracion_alimentador ?? "",
-        integracion_corredor: corredor?.integracion_corredor ?? "",
-        longitud_corredor: corredor?.longitud_corredor ?? "",
-        tipo_servicio: corredor?.tipo_servicio ?? "",
+export const FormularioCorredor = () => {
+    const { corredorSeleccionado, listarCorredores } = useContext(CorredorContext);
+    const [mensaje, setMensaje] = useState({});
+    const [form, setForm] = useState({
+        nombre_corredor: "",
+        inaguracion_corredor: "",
+        integracion_alimentador: "",
+        integracion_corredor: "",
+        longitud_corredor: "",
+        tipo_servicio: "",
         vehiculos: {
-            trolebus: corredor?.vehiculos?.trolebus ?? "",
-            biarticulados: corredor?.vehiculos?.biarticulados ?? "",
-            mb0500: corredor?.vehiculos?.mb0500 ?? "",
+            trolebus: "",
+            biarticulados: "",
+            mb0500: "",
         },
-        demanda_diaria: corredor?.demanda_diaria ?? "",
+        demanda_diaria: "",
         tarifa: {
-            normal: corredor?.tarifa?.normal ?? "",
-            reducida: corredor?.tarifa?.reducida ?? "",
-            preferencial: corredor?.tarifa?.preferencial ?? "",
+            normal: "",
+            reducida: "",
+            preferencial: "",
         },
-        historia: corredor?.historia ?? ""
-    })
+        historia: "",
+    });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    // ✅ Llenar formulario cuando corredorSeleccionado cambia
+    useEffect(() => {
+        llenarFormulario();
+    }, [corredorSeleccionado]);
 
-        // Manejo especial para objetos anidados (vehiculos y tarifa)
-        if (name in form.vehiculos) {
-            setform(prevState => ({
-                ...prevState,
+    // 🔄 Función para llenar el formulario si hay un corredor seleccionado
+    const llenarFormulario = () => {
+        if (corredorSeleccionado) {
+            setForm({
+                nombre_corredor: corredorSeleccionado.nombre_corredor ?? "",
+                inaguracion_corredor: corredorSeleccionado.inaguracion_corredor
+                    ? corredorSeleccionado.inaguracion_corredor.split("T")[0]
+                    : "",
+                integracion_alimentador: corredorSeleccionado.integracion_alimentador ?? "",
+                integracion_corredor: corredorSeleccionado.integracion_corredor ?? "",
+                longitud_corredor: corredorSeleccionado.longitud_corredor ?? "",
+                tipo_servicio: corredorSeleccionado.tipo_servicio ?? "",
                 vehiculos: {
-                    ...prevState.vehiculos,
-                    [name]: value === "" ? 0 : Number(value)  // Asegurar que sea número
-                }
-            }));
-        } else if (name in form.tarifa) {
-            setform(prevState => ({
-                ...prevState,
+                    trolebus: corredorSeleccionado.vehiculos?.trolebus ?? "",
+                    biarticulados: corredorSeleccionado.vehiculos?.biarticulados ?? "",
+                    mb0500: corredorSeleccionado.vehiculos?.mb0500 ?? "",
+                },
+                demanda_diaria: corredorSeleccionado.demanda_diaria ?? "",
                 tarifa: {
-                    ...prevState.tarifa,
-                    [name]: value === "" ? 0 : Number(value)  // Asegurar que sea número
-                }
-            }));
-        } else {
-            setform({
-                ...form,
-                [name]: value
+                    normal: corredorSeleccionado.tarifa?.normal ?? "",
+                    reducida: corredorSeleccionado.tarifa?.reducida ?? "",
+                    preferencial: corredorSeleccionado.tarifa?.preferencial ?? "",
+                },
+                historia: corredorSeleccionado.historia ?? "",
             });
+        } else {
+            resetForm();
         }
-    }
+    };
 
+    // ✅ Resetear el formulario
     const resetForm = () => {
-        setform({
+        setForm({
             nombre_corredor: "",
             inaguracion_corredor: "",
             integracion_alimentador: "",
@@ -81,44 +84,74 @@ export const FormularioCorredor = ({ corredor }) => {
                 reducida: "",
                 preferencial: "",
             },
-            historia: ""
-        })
-    }
+            historia: "",
+        });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Manejo especial para objetos anidados (vehiculos y tarifa)
+        if (name in form.vehiculos) {
+            setForm(prevState => ({
+                ...prevState,
+                vehiculos: {
+                    ...prevState.vehiculos,
+                    [name]: value === "" ? 0 : Number(value) // Convertir a número
+                }
+            }));
+        } else if (name in form.tarifa) {
+            setForm(prevState => ({
+                ...prevState,
+                tarifa: {
+                    ...prevState.tarifa,
+                    [name]: value === "" ? 0 : Number(value) // Convertir a número
+                }
+            }));
+        } else {
+            setForm({
+                ...form,
+                [name]: value
+            });
+        }
+    };
 
     const handleAgregar = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/registro`;
+            const confirmacion = confirm("¿Está seguro de agregar el corredor?");
+            if (confirmacion) {
+                const token = localStorage.getItem('token');
+                const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/registro`;
 
-            const options = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            };
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                };
 
-            // Asegurar valores válidos antes de enviar
-            const formCrear = {
-                ...form,
-                tarifa: {
-                    normal: form.tarifa.normal ?? "",
-                    reducida: form.tarifa.reducida ?? "",
-                    preferencial: form.tarifa.preferencial ?? "",
-                },
-                vehiculos: {
-                    trolebus: form.vehiculos.trolebus ?? "",
-                    biarticulados: form.vehiculos.biarticulados ?? "",
-                    mb0500: form.vehiculos.mb0500 ?? "",
-                }
-            };
+                // Asegurar valores válidos antes de enviar
+                const formAgregar = {
+                    ...form,
+                    tarifa: {
+                        normal: form.tarifa.normal ?? "",
+                        reducida: form.tarifa.reducida ?? "",
+                        preferencial: form.tarifa.preferencial ?? "",
+                    },
+                    vehiculos: {
+                        trolebus: form.vehiculos.trolebus ?? "",
+                        biarticulados: form.vehiculos.biarticulados ?? "",
+                        mb0500: form.vehiculos.mb0500 ?? "",
+                    }
+                };
 
-            delete formCrear._id;  // Eliminar _id si existe (actualización)
-
-            await axios.post(url, formCrear, options);
-            resetForm();
-            setMensaje({ respuesta: "Usuario administrador registrado con éxito.", tipo: true });
-            setTimeout(() => setMensaje({}), 3000);
+                await axios.post(url, formAgregar, options);
+                listarCorredores();
+                resetForm();
+                setMensaje({ respuesta: `Corredor "${form.nombre_corredor}" agregado con éxito.`, tipo: true });
+                setTimeout(() => setMensaje({}), 3000);
+            }
 
         } catch (error) {
             console.error(error);
@@ -127,10 +160,134 @@ export const FormularioCorredor = ({ corredor }) => {
         }
     }
 
+    const handleActualizar = async (e) => {
+        e.preventDefault();
+        try {
+            if (!corredorSeleccionado) {
+                setMensaje({ respuesta: "Seleccione un corredor para actualizar.", tipo: false });
+                setTimeout(() => setMensaje({}), 3000);
+                return;
+            }
+            else {
+                const confirmacion = confirm("¿Está seguro de actualizar el corredor?");
+                if (confirmacion) {
+                    const token = localStorage.getItem('token');
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/actualizar/${corredorSeleccionado._id}`;
+
+                    const options = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    };
+
+                    // Asegurar valores válidos antes de enviar
+                    const formActualizar = {
+                        ...form,
+                        tarifa: {
+                            normal: form.tarifa.normal ?? "",
+                            reducida: form.tarifa.reducida ?? "",
+                            preferencial: form.tarifa.preferencial ?? "",
+                        },
+                        vehiculos: {
+                            trolebus: form.vehiculos.trolebus ?? "",
+                            biarticulados: form.vehiculos.biarticulados ?? "",
+                            mb0500: form.vehiculos.mb0500 ?? "",
+                        }
+                    };
+
+                    await axios.put(url, formActualizar, options);
+                    listarCorredores();
+                    resetForm();
+                    setMensaje({ respuesta: `Corredor "${form.nombre_corredor}" actualizado con éxito.`, tipo: true });
+                    setTimeout(() => setMensaje({}), 3000);
+                }
+            };
+        } catch (error) {
+            console.error(error);
+            setMensaje({ respuesta: error.response?.data?.msg || "Error al actualizar.", tipo: false });
+            setTimeout(() => setMensaje({}), 3000);
+        }
+    }
+
+    const handleHabilitar = async (e) => {
+        e.preventDefault();
+        try {
+            if (!corredorSeleccionado) {
+                setMensaje({ respuesta: "Seleccione un corredor para habilitar.", tipo: false });
+                setTimeout(() => setMensaje({}), 3000);
+                return;
+            } else if (corredorSeleccionado.status) {
+                setMensaje({ respuesta: "El corredor seleccionado ya está habilitado.", tipo: false });
+                setTimeout(() => setMensaje({}), 3000);
+            }
+            else {
+                const confirmacion = confirm("¿Está seguro de habilitar el corredor?");
+                if (confirmacion) {
+                    const token = localStorage.getItem('token');
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/habilitar/${corredorSeleccionado._id}`;
+
+                    const options = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    };
+
+                    await axios.put(url, {}, options);
+                    listarCorredores();
+                    resetForm();
+                    setMensaje({ respuesta: `Corredor "${form.nombre_corredor}" habilitado con éxito.`, tipo: true });
+                    setTimeout(() => setMensaje({}), 3000);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            setMensaje({ respuesta: error.response?.data?.msg || "Error al habilitar.", tipo: false });
+            setTimeout(() => setMensaje({}), 3000);
+        }
+    }
+
+    const handleDesactivar = async (e) => {
+        e.preventDefault();
+        try {
+            if (!corredorSeleccionado) {
+                setMensaje({ respuesta: "Seleccione un corredor para deshabilitar.", tipo: false });
+                setTimeout(() => setMensaje({}), 3000);
+                return;
+            } else if (!corredorSeleccionado.status) {
+                setMensaje({ respuesta: "El corredor seleccionado ya está deshabilitado.", tipo: false });
+                setTimeout(() => setMensaje({}), 3000);
+            } else {
+                const confirmacion = confirm("¿Está seguro de deshabilitar el corredor?");
+                if (confirmacion) {
+                    const token = localStorage.getItem('token');
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/corredor/deshabilitar/${corredorSeleccionado._id}`;
+
+                    const options = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    };
+
+                    await axios.put(url, {}, options);
+                    listarCorredores();
+                    resetForm();
+                    setMensaje({ respuesta: `Corredor "${form.nombre_corredor}" deshabilitado con éxito.`, tipo: true });
+                    setTimeout(() => setMensaje({}), 3000);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            setMensaje({ respuesta: error.response?.data?.msg || "Error al deshabilitar.", tipo: false });
+            setTimeout(() => setMensaje({}), 3000);
+        }
+    }
+
     return (
 
         <form className='shadow-2xl rounded-lg p-10'>
-            {Object.keys(mensaje).length > 0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}
             <div>
                 <label
                     htmlFor='nombre_corredor'
@@ -333,9 +490,31 @@ export const FormularioCorredor = ({ corredor }) => {
                                 hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
                     onClick={handleAgregar}>
                     <FontAwesomeIcon icon={faUserPlus} />
-                    Agregar Usuario
+                    Agregar Corredor de Transporte
+                </button>
+
+                <button className="bg-custom-yellow w-full p-3 text-white  font-bold rounded-lg
+                                    hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
+                    onClick={handleActualizar}>
+                    <FontAwesomeIcon icon={faUserPen} />
+                    Actualizar Corredor de Transporte
+                </button>
+
+                <button className="bg-green-600 w-full p-3 text-white  font-bold rounded-lg
+                                    hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
+                    onClick={handleHabilitar}>
+                    <FontAwesomeIcon icon={faUserCheck} />
+                    Activar Corredor de Transporte
+                </button>
+
+                <button className="bg-custom-blue w-full p-3 text-white  font-bold rounded-lg
+                                    hover:bg-custom-red cursor-pointer transition-all flex items-center justify-center gap-2"
+                    onClick={handleDesactivar}>
+                    <FontAwesomeIcon icon={faUserMinus} />
+                    Deshabilitar Corredor de Transporte
                 </button>
             </div>
+            {Object.keys(mensaje).length > 0 && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}
         </form>
     )
 }

@@ -10,7 +10,7 @@ import axios from 'axios'
 const Login = () => {
 
     const navigate = useNavigate()
-    const { setAuth } = useContext(AuthContext)
+    const { setAuth, listarAdministradores } = useContext(AuthContext)
 
     // Paso 1
     const [form, setForm] = useState({
@@ -38,6 +38,7 @@ const Login = () => {
             localStorage.setItem('token', respuesta.data.token)
             setAuth(respuesta.data)
             navigate('/dashboard')
+            listarAdministradores()
             toast.success('Bienvenido')
         } catch (error) {
             toast.error(error.response.data.msg)

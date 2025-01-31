@@ -21,12 +21,6 @@ export const FormularioAdministrador = () => {
         email: '',
     });
 
-    // 🔄 Escuchar el evento global para resetear el formulario
-    useEffect(() => {
-        const handleReset = () => resetForm();
-        window.addEventListener('resetForm', handleReset);
-        return () => window.removeEventListener('resetForm', handleReset);
-    }, []);
 
     // Llenar el formulario automáticamente cuando cambie el administrador seleccionado
     useEffect(() => {
