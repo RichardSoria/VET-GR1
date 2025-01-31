@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { Formulario } from '../components/Perfil/Formulario';
-import Tabla from '../components/Perfil/Tabla';
-import AuthContext from '../context/AuthProvider';
-import { CardPerfil } from '../components/Perfil/CardPerfil';
+import { FormularioAdministrador } from '../components/Administrador/FormularioAdministrador';
+import TablaAdministrador from '../components/Administrador/TablaAdministrador';
+import AuthContext from '../context/AdministradorProvider';
+import { CardAdministrador } from '../components/Administrador/CardAdministrador';
 
-const Perfil = () => {
+const GestionarAdministrador = () => {
 
     const { auth } = useContext(AuthContext)
 
@@ -25,14 +25,14 @@ const Perfil = () => {
             </div>
             {
                 auth.rol === 'Administrador'
-                    ? (<CardPerfil />)
+                    ? (<CardAdministrador />)
                     : (
                         <div className='flex justify-around gap-x-8 flex-wrap gap-y-8 md:flex-nowrap'>
                             <div className='w-full md:w-1/2'>
-                                <Formulario/>
+                                <FormularioAdministrador />
                             </div>
                             <div className='w-full md:w-1/2'>
-                                <Tabla/>
+                                <TablaAdministrador />
                             </div>
                         </div>
                     )
@@ -42,4 +42,4 @@ const Perfil = () => {
     );
 };
 
-export default Perfil;
+export default GestionarAdministrador;

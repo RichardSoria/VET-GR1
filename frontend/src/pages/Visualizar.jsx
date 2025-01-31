@@ -5,7 +5,7 @@ import Mensaje from '../components/Alertas/Mensaje';
 import { useNavigate } from "react-router-dom";
 import ModalTratamiento from '../components/Modals/ModalTratamiento';
 import TratamientosContext from '../context/TrataminetosProvider';
-import AuthContext from '../context/AuthProvider';
+import AuthContext from '../context/AdministradorProvider';
 import AdministradorIcon from "../assets/PRODUCCION.png"
 
 const Visualizar = () => {

@@ -1,9 +1,9 @@
 import { useContext } from "react"
-import AuthContext from "../../context/AuthProvider"
+import AuthContext from "../../context/AdministradorProvider"
 import AdministradorIcon from "../../assets/PRODUCCION.png"
 
 
-export const CardPerfil = () => {
+export const CardAdministrador = () => {
     const { auth } = useContext(AuthContext)
 
     return (

@@ -1,12 +1,12 @@
 import { useContext, useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import Mensaje from "./Alertas/Mensaje";
+import Mensaje from "../Alertas/Mensaje";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 
 
-export const Formulario = ({ corredor }) => {
+export const FormularioCorredor = ({ corredor }) => {
 
     const navigate = useNavigate()
 

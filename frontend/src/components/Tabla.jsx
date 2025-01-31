@@ -3,7 +3,7 @@ import { MdDeleteForever, MdNoteAdd, MdInfo } from "react-icons/md";
 import axios from 'axios';
 import Mensaje from "./Alertas/Mensaje";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthProvider";
+import AuthContext from "../context/AdministradorProvider";
 
 
 

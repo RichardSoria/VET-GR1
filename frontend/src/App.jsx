@@ -9,12 +9,12 @@ import { NotFound } from './pages/NotFound'
 import Dashboard from './layout/Dashboard'
 import Listar from './pages/Listar'
 import Visualizar from './pages/Visualizar'
-import Crear from './pages/Crear'
+import GestionarCorredor from './pages/GestionarCorredor'
 import Actualizar from './pages/Actualizar'
-import Perfil from './pages/Perfil'
+import GestionarAdministrador from './pages/GestionarAdministrador'
 import { Confirmar } from './pages/Confirmar'
 import Restablecer from './pages/Restablecer'
-import { AuthProvider } from './context/AuthProvider'
+import { AdministradorProvider } from './context/AdministradorProvider'
 import { PrivateRoute } from './routes/PrivateRoute'
 import { TratamientosProvider } from './context/TrataminetosProvider'
 
@@ -24,7 +24,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
-      <AuthProvider>
+      <AdministradorProvider>
       <TratamientosProvider>
       <Routes>
         <Route index element={<LandinPage/>}/>
@@ -40,10 +40,10 @@ function App() {
           <PrivateRoute>
             <Routes>
               <Route element={<Dashboard/>}>
-                <Route index element={<Perfil/>}/>
+                <Route index element={<GestionarAdministrador/>}/>
                 <Route path='listar' element={<Listar/>}/>
                 <Route path='visualizar/:id' element={<Visualizar/>}/>
-                <Route path='crear' element={<Crear/>}/>
+                <Route path='gestionar-corredor' element={<GestionarCorredor/>}/>
                 <Route path='actualizar/:id' element={<Actualizar/>}/>
               </Route>
             </Routes>
@@ -51,7 +51,7 @@ function App() {
         }/>
       </Routes>
       </TratamientosProvider>
-      </AuthProvider>
+      </AdministradorProvider>
     </BrowserRouter>
     </>
   )

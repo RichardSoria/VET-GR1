@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react"
 
 const AuthContext = createContext()
 
-const AuthProvider = ({ children }) => {
+const AdministradorProvider = ({ children }) => {
     const [auth, setAuth] = useState({})
     const [administradores, setAdministradores] = useState([])
     const [administradorSeleccionado, setAdministradorSeleccionado] = useState(null)
@@ -69,6 +69,6 @@ const AuthProvider = ({ children }) => {
     )
 }
 export {
-    AuthProvider
+    AdministradorProvider
 }
 export default AuthContext

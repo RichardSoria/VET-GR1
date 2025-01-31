@@ -4,10 +4,10 @@ import Mensaje from "../Alertas/Mensaje";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserPen, faUserCheck, faUserMinus } from '@fortawesome/free-solid-svg-icons';
-import AuthContext from "../../context/AuthProvider";
+import AuthContext from "../../context/AdministradorProvider";
 
 
-export const Formulario = () => {
+export const FormularioAdministrador = () => {
 
     const { administradorSeleccionado, listarAdministradores } = useContext(AuthContext)
 
@@ -20,6 +20,13 @@ export const Formulario = () => {
         telefono: '',
         email: '',
     });
+
+    // 🔄 Escuchar el evento global para resetear el formulario
+    useEffect(() => {
+        const handleReset = () => resetForm();
+        window.addEventListener('resetForm', handleReset);
+        return () => window.removeEventListener('resetForm', handleReset);
+    }, []);
 
     // Llenar el formulario automáticamente cuando cambie el administrador seleccionado
     useEffect(() => {
@@ -81,24 +88,32 @@ export const Formulario = () => {
     const handleActualizar = async (e) => {
         e.preventDefault()
         try {
-            const confirmacion = window.confirm('¿Estas seguro de actualizar este usuario?')
-            if (confirmacion) {
-                const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administrador._id}`
-                const options = {
-                    headers: {
-                        method: 'PUT',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-                await axios.put(url, form, options)
-                listarAdministradores()
-                resetForm()
-                setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
+            if (!administradorSeleccionado){
+                setMensaje({ respuesta: "Seleccione un usuario para actualizar", tipo: false })
                 setTimeout(() => {
                     setMensaje({})
                 }, 3000);
+            }
+            else{
+                const confirmacion = window.confirm('¿Estas seguro de actualizar este usuario?')
+                if (confirmacion) {
+                    const token = localStorage.getItem('token')
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/${administradorSeleccionado._id}`
+                    const options = {
+                        headers: {
+                            method: 'PUT',
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                    await axios.put(url, form, options)
+                    listarAdministradores()
+                    resetForm()
+                    setMensaje({ respuesta: "Usuario administrador actualizado con exito.", tipo: true })
+                    setTimeout(() => {
+                        setMensaje({})
+                    }, 3000);
+                }
             }
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
@@ -111,24 +126,37 @@ export const Formulario = () => {
     const handleHabilitar = async (e) => {
         e.preventDefault()
         try {
-            const confirmacion = window.confirm('¿Estas seguro de habilitar este usuario?')
-            if (confirmacion) {
-                const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administrador._id}`
-                const options = {
-                    headers: {
-                        method: 'PUT',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-                await axios.put(url, {}, options)
-                listarAdministradores()
-                resetForm()
-                setMensaje({ respuesta: "Usuario administrador habilitado con exito.", tipo: true })
+            if (!administradorSeleccionado){
+                setMensaje({ respuesta: "Seleccione un usuario para habilitar", tipo: false })
                 setTimeout(() => {
                     setMensaje({})
                 }, 3000);
+            } else if (administradorSeleccionado.status) {
+                setMensaje({ respuesta: "El usuario ya se encuentra habilitado", tipo: false })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
+            }
+            else{
+                const confirmacion = window.confirm('¿Estas seguro de habilitar este usuario?')
+                if (confirmacion) {
+                    const token = localStorage.getItem('token')
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/habilitar/${administradorSeleccionado._id}`
+                    const options = {
+                        headers: {
+                            method: 'PUT',
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                    await axios.put(url, {}, options)
+                    listarAdministradores()
+                    resetForm()
+                    setMensaje({ respuesta: "Usuario administrador habilitado con exito.", tipo: true })
+                    setTimeout(() => {
+                        setMensaje({})
+                    }, 3000);
+                }
             }
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })
@@ -141,24 +169,37 @@ export const Formulario = () => {
     const handleDesactivar = async (e) => {
         e.preventDefault()
         try {
-            const confirmacion = window.confirm('¿Estas seguro de deshabilitar este usuario?')
-            if (confirmacion) {
-                const token = localStorage.getItem('token')
-                const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administrador._id}`
-                const options = {
-                    headers: {
-                        method: 'PUT',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-                await axios.put(url, {}, options)
-                listarAdministradores()
-                resetForm()
-                setMensaje({ respuesta: "Usuario administrador deshabilitado con exito.", tipo: true })
+            if (!administradorSeleccionado){
+                setMensaje({ respuesta: "Seleccione un usuario para deshabilitar", tipo: false })
                 setTimeout(() => {
                     setMensaje({})
                 }, 3000);
+            } else if (!administradorSeleccionado.status) {
+                setMensaje({ respuesta: "El usuario ya se encuentra deshabilitado", tipo: false })
+                setTimeout(() => {
+                    setMensaje({})
+                }, 3000);
+            }
+            else{
+                const confirmacion = window.confirm('¿Estas seguro de deshabilitar este usuario?')
+                if (confirmacion) {
+                    const token = localStorage.getItem('token')
+                    const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/deshabilitar/${administradorSeleccionado._id}`
+                    const options = {
+                        headers: {
+                            method: 'PUT',
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                    await axios.put(url, {}, options)
+                    listarAdministradores()
+                    resetForm()
+                    setMensaje({ respuesta: "Usuario administrador deshabilitado con exito.", tipo: true })
+                    setTimeout(() => {
+                        setMensaje({})
+                    }, 3000);
+                }
             }
         } catch (error) {
             setMensaje({ respuesta: error.response.data.msg, tipo: false })

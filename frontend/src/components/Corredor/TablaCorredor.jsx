@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { MdDeleteForever, MdNoteAdd, MdInfo } from "react-icons/md";
+import { useContext } from "react";
+import { MdInfo } from "react-icons/md";
 
 import Mensaje from "../Alertas/Mensaje";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../context/AuthProvider";
+import AuthContext from "../../context/AdministradorProvider";
 
 
-const Tabla = () => {
+const TablaCorredor = () => {
 
     const { administradores, setAdministradorSeleccionado } = useContext(AuthContext)
     const navigate = useNavigate()
@@ -37,7 +37,7 @@ const Tabla = () => {
                                         }`} key={administrador._id}
                                         onClick={() => setAdministradorSeleccionado(administrador)}>
                                         <td className="p-2 border-2 border-white">{index + 1}</td>
-                                        <td className="p-2 border-2 border-white">{administrador.nombre}</td>
+                                        <td className="p-2 border-2 border-white">{administrador.nombre_corredor}</td>
                                         <td className="p-2 border-2 border-white">{administrador.apellido}</td>
                                         <td className="p-2 border-2 border-white">{administrador.email}</td>
                                         <td className="p-2 border-2 border-white">{administrador.telefono}</td>
@@ -64,4 +64,4 @@ const Tabla = () => {
     )
 }
 
-export default Tabla
+export default TablaCorredor
