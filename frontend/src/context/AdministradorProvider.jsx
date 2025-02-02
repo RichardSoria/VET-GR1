@@ -1,9 +1,11 @@
 import axios from "axios"
 import { createContext, useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 
 const AuthContext = createContext()
 
 const AdministradorProvider = ({ children }) => {
+    const location = useLocation()
     const [auth, setAuth] = useState({})
     const [administradores, setAdministradores] = useState([])
     const [administradorSeleccionado, setAdministradorSeleccionado] = useState(null)
@@ -46,10 +48,11 @@ const AdministradorProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
-            perfil(token),
+            perfil(token)
             listarAdministradores()
         }
-    }, [])
+        setAdministradorSeleccionado(null)
+    }, [location.pathname])
 
 
     return (

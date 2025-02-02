@@ -34,7 +34,7 @@ const rutaSchema = new Schema({
     ],
     corredor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Corredores', 
+        ref: 'Corredor', 
         required: true,
     },
 }, {

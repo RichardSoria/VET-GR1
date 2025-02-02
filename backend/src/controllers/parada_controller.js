@@ -6,13 +6,14 @@ import Corredor from '../models/Corredor.js';
 // Obtener todas las paradas
 const listarParadas = async (req, res) => {
   try {
-    const paradas = await Parada.find().populate('rutas', 'nombre') 
-                                     .populate('corredores', 'nombre'); 
-    res.status(200).json(paradas);
-  } catch (error) {
-    res.status(500).json({ msg: "Error al obtener las paradas", error: error.message });
-  }
-};
+      const paradas = await Parada.find();
+      res.status(200).json(paradas);
+  
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error al obtener las paradas" });
+    }
+  };
 
 // Obtener el detalle de una parada
 const detalleParada = async (req, res) => {
@@ -23,8 +24,8 @@ const detalleParada = async (req, res) => {
   }
 
   try {
-    const parada = await Parada.findById(id).populate('rutas', 'nombre') 
-                                          .populate('corredores', 'nombre'); 
+    const parada = await Parada.findById(id).populate('rutas', 'nombre')
+      .populate('corredores', 'nombre');
     if (!parada) {
       return res.status(404).json({ msg: `La parada con ID ${id} no fue encontrada.` });
     }
@@ -34,42 +35,14 @@ const detalleParada = async (req, res) => {
   }
 };
 
-// Crear una nueva parada
+// Método para crear el tratamiento
 const crearParada = async (req, res) => {
-  const { nombre, tipo, ubicacion, rutas, corredores, estado } = req.body;
-
-  if (!nombre || !tipo || !ubicacion || !rutas || !corredores) {
-    return res.status(400).json({ msg: "Todos los campos son obligatorios." });
-  }
-
-  try {
-    // Verificar que las rutas existen
-    const rutasExistentes = await Ruta.find({ '_id': { $in: rutas } });
-    if (rutasExistentes.length !== rutas.length) {
-      return res.status(400).json({ msg: "Una o más rutas no existen en la base de datos." });
-    }
-
-    // Verificar que los corredores existen
-    const corredoresExistentes = await Corredor.find({ '_id': { $in: corredores } });
-    if (corredoresExistentes.length !== corredores.length) {
-      return res.status(400).json({ msg: "Uno o más corredores no existen en la base de datos." });
-    }
-
-    const nuevaParada = new Parada({
-      nombre,
-      tipo,
-      ubicacion,
-      rutas,
-      corredores,
-      estado,
-    });
-
-    await nuevaParada.save();
-    res.status(201).json({ msg: "Parada registrada exitosamente.", nuevaParada });
-  } catch (error) {
-    res.status(500).json({ msg: "Error al registrar la parada", error: error.message });
-  }
-};
+  const { corredor } = req.body
+  console.log(corredor)
+  if (!mongoose.Types.ObjectId.isValid(corredor)) return res.status(404).json({ msg: `Lo sentimos, debe ser un id válido` });
+  const parada = await Parada.create(req.body)
+  res.status(200).json({ msg: `Registro exitoso del tratamiento ${parada._id}`, parada })
+}
 
 
 const actualizarParada = async (req, res) => {

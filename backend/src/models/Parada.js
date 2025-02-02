@@ -12,7 +12,7 @@ const paradaSchema = new Schema(
       required: true,
       trim: true,
     },
-    estado: {
+    status: {
       type: Boolean,
       default: true, 
     },
@@ -25,7 +25,7 @@ const paradaSchema = new Schema(
     corredores: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Corredores', 
+        ref: 'Corredor', 
       },
     ],
     ubicacion: {

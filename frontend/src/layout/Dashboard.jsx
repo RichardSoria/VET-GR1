@@ -9,6 +9,13 @@ const Dashboard = () => {
     const { auth } = useContext(AuthContext);
     const autenticado = localStorage.getItem('token');
 
+    useEffect(() => {
+        const container = document.querySelector('.overflow-y-scroll');
+        if (container) {
+            container.scrollTo({ top: 0 });
+        }
+    }, [location.pathname]);
+
     return (
         <div className='md:flex md:min-h-screen'>
             <div className='md:w-1/6 px-4 py-20 border-custom-light-blue border-r-8'

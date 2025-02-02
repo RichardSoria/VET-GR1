@@ -1,22 +1,18 @@
 import './App.css'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Auth from './layout/Auth'
 import Login from './pages/Login'
 import { LandinPage } from './pages/LandinPage'
-import { Register } from './pages/Register'
-import { Forgot } from './pages/Forgot'
 import { NotFound } from './pages/NotFound'
 import Dashboard from './layout/Dashboard'
-import Listar from './pages/Listar'
-import Visualizar from './pages/Visualizar'
+
+import VisualizarAdministrador from './pages/VisualizarAdministrador'
+import VisualizarCorredor from './pages/VisualizarCorredor'
 import GestionarCorredor from './pages/GestionarCorredor'
-import Actualizar from './pages/Actualizar'
 import GestionarAdministrador from './pages/GestionarAdministrador'
-import { Confirmar } from './pages/Confirmar'
-import Restablecer from './pages/Restablecer'
 import { AdministradorProvider } from './context/AdministradorProvider'
 import { PrivateRoute } from './routes/PrivateRoute'
-import { TratamientosProvider } from './context/TrataminetosProvider'
+import { ParadasProvider } from './context/ParadaProvider'
 import { CorredorProvider } from './context/CorredorProvider'
 
 
@@ -24,38 +20,33 @@ import { CorredorProvider } from './context/CorredorProvider'
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <AdministradorProvider>
-        <CorredorProvider>
-      <TratamientosProvider>
-      <Routes>
-        <Route index element={<LandinPage/>}/>
-        <Route path='/' element={<Auth/>}>
-          <Route path='login' element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
-          <Route path='forgot/:id' element={<Forgot/>}/>
-          <Route path='confirmar/:token' element={<Confirmar/>}/>
-          <Route path='recuperar-password/:token' element={<Restablecer/>}/>
-          <Route path='*' element={<NotFound />} />
-        </Route>
-        <Route path='dashboard/*' element={
-          <PrivateRoute>
-            <Routes>
-              <Route element={<Dashboard/>}>
-                <Route index element={<GestionarAdministrador/>}/>
-                <Route path='listar' element={<Listar/>}/>
-                <Route path='visualizar/:id' element={<Visualizar/>}/>
-                <Route path='gestionar-corredor' element={<GestionarCorredor/>}/>
-                <Route path='actualizar/:id' element={<Actualizar/>}/>
-              </Route>
-            </Routes>
-          </PrivateRoute> 
-        }/>
-      </Routes>
-      </TratamientosProvider>
-      </CorredorProvider>
-      </AdministradorProvider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <AdministradorProvider>
+          <CorredorProvider>
+            <ParadasProvider>
+              <Routes>
+                <Route index element={<LandinPage />} />
+                <Route path='/' element={<Auth />}>
+                  <Route path='login' element={<Login />} />
+                  <Route path='*' element={<NotFound />} />
+                </Route>
+                <Route path='dashboard/*' element={
+                  <PrivateRoute>
+                    <Routes>
+                      <Route element={<Dashboard />}>
+                        <Route index element={<GestionarAdministrador />} />
+                        <Route path='visualizar/:id' element={<VisualizarAdministrador />} />
+                        <Route path='gestionar-corredor' element={<GestionarCorredor />} />
+                        <Route path='corredor/:id' element={<VisualizarCorredor />} />
+                      </Route>
+                    </Routes>
+                  </PrivateRoute>
+                } />
+              </Routes>
+            </ParadasProvider>
+          </CorredorProvider>
+        </AdministradorProvider>
+      </BrowserRouter>
     </>
   )
 }

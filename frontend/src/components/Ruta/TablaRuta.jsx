@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CorredorContext from "../../context/CorredorProvider";
 
 
-const TablaCorredor = () => {
+const TablaRuta = () => {
 
     const { corredores, setCorredorSeleccionado } = useContext(CorredorContext)
     const navigate = useNavigate()
@@ -65,4 +65,4 @@ const TablaCorredor = () => {
     )
 }
 
-export default TablaCorredor
+export default TablaRuta

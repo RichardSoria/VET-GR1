@@ -1,9 +1,12 @@
 import axios from "axios"
 import { createContext, useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 
 const CorredorContext = createContext()
 
 const CorredorProvider = ({ children }) => {
+
+    const location = useLocation()
 
     const [corredores, setCorredores] = useState([])
     const [corredorSeleccionado, setCorredorSeleccionado] = useState(null)
@@ -27,11 +30,13 @@ const CorredorProvider = ({ children }) => {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         if (token) {
-            listarCorredores()
+            listarCorredores();
         }
-    }, [])
+        // Además, al cambiar de ruta, reiniciamos el corredor seleccionado.
+        setCorredorSeleccionado(null);
+    }, [location.pathname]);
 
 
     return (
