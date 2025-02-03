@@ -10,10 +10,12 @@ import VisualizarAdministrador from './pages/VisualizarAdministrador'
 import VisualizarCorredor from './pages/VisualizarCorredor'
 import GestionarCorredor from './pages/GestionarCorredor'
 import GestionarAdministrador from './pages/GestionarAdministrador'
+import GestionarParadasRutas from './pages/GestionarParadasRutas'
 import { AdministradorProvider } from './context/AdministradorProvider'
 import { PrivateRoute } from './routes/PrivateRoute'
-import { ParadasProvider } from './context/ParadaProvider'
+import { ParadaProvider } from './context/ParadaProvider'
 import { CorredorProvider } from './context/CorredorProvider'
+import { RutaProvider } from './context/RutaProvider'
 
 
 
@@ -23,7 +25,8 @@ function App() {
       <BrowserRouter>
         <AdministradorProvider>
           <CorredorProvider>
-            <ParadasProvider>
+            <ParadaProvider>
+              <RutaProvider>
               <Routes>
                 <Route index element={<LandinPage />} />
                 <Route path='/' element={<Auth />}>
@@ -38,12 +41,15 @@ function App() {
                         <Route path='visualizar/:id' element={<VisualizarAdministrador />} />
                         <Route path='gestionar-corredor' element={<GestionarCorredor />} />
                         <Route path='corredor/:id' element={<VisualizarCorredor />} />
+                        <Route path='*' element={<NotFound />} />
+                        <Route path="/gestionar-paradas-rutas" element={<GestionarParadasRutas/>}/>
                       </Route>
                     </Routes>
                   </PrivateRoute>
                 } />
               </Routes>
-            </ParadasProvider>
+              </RutaProvider>
+            </ParadaProvider>
           </CorredorProvider>
         </AdministradorProvider>
       </BrowserRouter>

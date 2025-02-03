@@ -3,8 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Mensaje from '../components/Alertas/Mensaje';
 import { useNavigate } from "react-router-dom";
-import ModalTratamiento from '../components/Modals/ModalParada';
-import TratamientosContext from '../context/TrataminetosProvider';
+
 import AuthContext from '../context/AdministradorProvider';
 import AdministradorIcon from "../assets/PRODUCCION.png"
 

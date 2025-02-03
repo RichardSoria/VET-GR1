@@ -6,7 +6,7 @@ const router = Router();
 
 
 router.get("/corredores", verificarAutenticacion, listarCorredores);
-router.get("/corredor/:id", detalleCorredor);
+router.get("/corredor/:id", verificarAutenticacion, detalleCorredor);
 router.get("/corredor/paradas/:id", listarParadasDeCorredor);
 router.post("/corredor/registro", verificarAutenticacion,crearCorredor);
 router.put("/corredor/actualizar/:id", verificarAutenticacion,actualizarCorredor);

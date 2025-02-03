@@ -22,12 +22,11 @@ const paradaSchema = new Schema(
         ref: 'Ruta', 
       },
     ],
-    corredores: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Corredor', 
-      },
-    ],
+    corredor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Corredor',
+      required: true,
+    },
     ubicacion: {
       type: String,
       required: true,

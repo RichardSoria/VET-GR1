@@ -1,26 +1,20 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { use, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import Mensaje from '../components/Alertas/Mensaje';
 import { useNavigate } from "react-router-dom";
-import ModalParada from '../components/Modals/ModalParada';
-import TratamientosContext from '../context/TrataminetosProvider';
 import AuthContext from '../context/AdministradorProvider';
-import AdministradorIcon from "../assets/PRODUCCION.png";
-import TablaCorredor from '../components/Corredor/TablaCorredor';
 import { useLocation } from 'react-router-dom';
 import TablaParada from '../components/Parada/TablaParada';
 import TablaRuta from '../components/Ruta/TablaRuta';
 import ParadasContext from '../context/ParadaProvider';
+import { FormularioParada } from '../components/Parada/FormularioParada';
+import { FormularioRuta } from '../components/Ruta/FormularioRuta';
 
 const VisualizarCorredor = () => {
-    const location = useLocation();
-    const { auth } = useContext(AuthContext);
-    const { modal, handleModal, paradas, setParadas } = useContext(ParadasContext);
+
     const navigate = useNavigate();
     const { id } = useParams();
     const [corredor, setCorredor] = useState({});
-    const [mensaje, setMensaje] = useState({});
 
     useEffect(() => {
 
@@ -134,20 +128,29 @@ const VisualizarCorredor = () => {
                             {corredor.updatedAt ? new Date(corredor.updatedAt).toLocaleString("es-ES", { timeZone: "America/Guayaquil" }) : "No disponible"}
                         </p>
                     </div>
-                    <div className="p-5 shadow-2xl bg-slate-50 bg-opacity-50">
+                    <div className="p-4 shadow-2xl bg-slate-50 bg-opacity-50">
+                        <p className="text-xl text-gray-700 text-center">
+                            <span className="text-black uppercase font-bold">Paradas del Corredor</span>
+                        </p>
                         <TablaParada />
-                        <div className='mt-5 flex justify-center'>
-                            <button
-                                className='text-black font-bold bg-custom-yellow p-3 rounded-md text-center text-xl hover:bg-custom-red hover:text-white'
-                                onClick={handleModal}
-                            >
-                                Crear nueva parada para el Corredor
-                            </button>
-                        </div>
-                        {modal && (<ModalParada idCorredor={corredor._id} />)}
+                        <br />
+                        <p className="text-xl text-gray-700 text-center">
+                            <span className="text-black uppercase font-bold">Gestionar Parada</span>
+                        </p>
+                        <br />
+                        <FormularioParada />
                     </div>
                     <div className="p-5 shadow-2xl bg-slate-50 bg-opacity-50">
+                    <p className="text-xl text-gray-700 text-center">
+                            <span className="text-black uppercase font-bold">Rutas del Corredor</span>
+                        </p>
                         <TablaRuta />
+                        <br />
+                        <p className="text-xl text-gray-700 text-center">
+                            <span className="text-black uppercase font-bold">Gestionar Ruta</span>
+                        </p>
+                        <br />
+                        <FormularioRuta />
                     </div>
                 </div>
             </div>

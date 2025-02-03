@@ -2,81 +2,54 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const ParadasContext = createContext()
+const ParadaContext = createContext();
 
-// Integrantes (children)
-const ParadasProvider = ({ children }) => {
+const ParadaProvider = ({ children }) => {
+    const location = useLocation();
 
-    const location = useLocation()
-
-    const [modal, setModal] = useState(false)
-    const [paradas, setParadas] = useState([])
-
-    const handleModal = () => {
-
-        setModal(!modal)
-    }
+    const [paradas, setParadas] = useState([]);
+    const [paradaSeleccionada, setParadaSeleccionada] = useState(null);
 
     const listarParadas = async () => {
         try {
-            const token = localStorage.getItem('token')
-            const url = `${import.meta.env.VITE_BACKEND_URL}/paradas`
+            const token = localStorage.getItem("token");
+            const url = `${import.meta.env.VITE_BACKEND_URL}/paradas`;
             const options = {
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            const respuesta = await axios.get(url, options)
-            setParadas(respuesta.data, ...paradas)
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const respuesta = await axios.get(url, options);
+            setParadas(respuesta.data);
         } catch (error) {
-            console.log(error);
+            console.error("Error al listar paradas:", error);
         }
-    }
+    };
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
             listarParadas();
         }
+        // Reiniciar la parada seleccionada al cambiar de ruta
+        setParadaSeleccionada(null);
     }, [location.pathname]);
 
-    const registrarParada = async (data) => {
-        // Tarea
-        const token = localStorage.getItem('token')
-        try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/parada/registro`
-            const options = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            const respuesta = await axios.post(url, data, options)
-            console.log(respuesta.data)
-            listarParadas()
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     return (
-        <ParadasContext.Provider value={
-            {
-                // Contenido del mensaje
-                modal,
-                setModal,
-                handleModal,
+        <ParadaContext.Provider
+            value={{
+                listarParadas,
                 paradas,
                 setParadas,
-                registrarParada,
-                listarParadas
-            }
-        }>
+                paradaSeleccionada,
+                setParadaSeleccionada,
+            }}
+        >
             {children}
-        </ParadasContext.Provider>
-    )
-}
+        </ParadaContext.Provider>
+    );
+};
 
-export { ParadasProvider }
-export default ParadasContext
+export { ParadaProvider };
+export default ParadaContext;

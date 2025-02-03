@@ -6,21 +6,17 @@ import {
     detalleRuta,
     registrarRuta,
     actualizarRuta,
-    eliminarRuta,
-    listarRutasPorCorredor,
-    listarParadasDeRuta,
+    habilitarRuta,
+    deshabilitarRuta,
 } from "../controllers/ruta_controller.js";
 
 import verificarAutenticacion from "../middlewares/autenticacion.js";
 
-
-
-router.get("/rutas",  listarRutas);
-router.get("/ruta/:id",  detalleRuta);
+router.get("/rutas", listarRutas);
+router.get("/ruta/:id", detalleRuta);
 router.post("/ruta/registro", verificarAutenticacion, registrarRuta);
 router.put("/ruta/actualizar/:id", verificarAutenticacion, actualizarRuta);
-router.delete("/ruta/eliminar/:id", verificarAutenticacion, eliminarRuta);
-router.get("corredor/rutas/:corredorId", listarRutasPorCorredor);
-router.get("/ruta/paradas/:id", listarParadasDeRuta);
+router.put("/ruta/habilitar/:id", verificarAutenticacion, habilitarRuta);
+router.put("/ruta/deshabilitar/:id", verificarAutenticacion, deshabilitarRuta);
 
 export default router;

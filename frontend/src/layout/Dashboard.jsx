@@ -39,7 +39,7 @@ const Dashboard = () => {
                         <Link to='/dashboard/gestionar-corredor' className={`${location.pathname === '/dashboard/gestionar-corredor' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2 hover:bg-custom-red hover:text-white rounded-md p-2`}>Gestionar Corredores</Link>
                     </li>
                     <li className="text-center">
-                        <Link to='/dashboard/listar' className={`${location.pathname === '/dashboard/listar' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2 hover:bg-custom-red hover:text-white rounded-md p-2`}>Gestionar Paradas y Rutas</Link>
+                        <Link to='/dashboard/gestionar-paradas-rutas' className={`${location.pathname === '/dashboard/listar' ? 'text-white font-bold bg-custom-yellow p-2 rounded-md text-center' : 'text-black font-bold'} text-xl block mt-2 hover:bg-custom-red hover:text-white rounded-md p-2`}>Gestionar Paradas y Rutas</Link>
                     </li>
                 </ul>
             </div>

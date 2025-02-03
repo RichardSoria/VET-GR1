@@ -65,8 +65,13 @@ const corredorSchema = new Schema(
     },
     paradas: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Parada',  
+        _id: {
+          type: Schema.Types.ObjectId,
+          ref: 'Parada',
+        },
+        nombre: {
+          type: String,
+        }
       }
     ],
     status: {

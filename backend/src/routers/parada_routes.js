@@ -4,20 +4,23 @@ import {
   detalleParada,
   crearParada,
   actualizarParada,
-  eliminarParada
+  habilitarParada,
+  deshabilitarParada
 } from '../controllers/parada_controller.js';
 import verificarAutenticacion from "../middlewares/autenticacion.js";
 
 const router = express.Router();
 
-router.get('/paradas', listarParadas);
+router.get('/paradas', verificarAutenticacion, listarParadas);
 
-router.get('/parada/:id', detalleParada);
+router.get('/parada/:id', verificarAutenticacion, detalleParada);
 
 router.post('/parada/registro',verificarAutenticacion, crearParada);
 
 router.put('/parada/:id',verificarAutenticacion, actualizarParada);
 
-router.delete('/parada/:id',verificarAutenticacion ,eliminarParada);
+router.put('/parada/activar/:id',verificarAutenticacion, habilitarParada);
+
+router.put('/parada/desactivar/:id',verificarAutenticacion, deshabilitarParada);
 
 export default router;
